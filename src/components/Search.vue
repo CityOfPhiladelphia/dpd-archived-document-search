@@ -1,6 +1,7 @@
 <template>
   <div>
     <input type="text">
+    <!-- Advanced Search component -->
   </div>
 </template>
 

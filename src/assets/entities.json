@@ -1,0 +1,777 @@
+[
+  {
+    "id": 1,
+    "name": "Historical_Commission",
+    "displayName": "Historical Commission",
+    "categories": [
+      {
+        "id": 6,
+        "name": "HISTORICAL_COMM-CARD_CATALOG",
+        "displayName": "Card Catalog",
+        "attributes": [
+          {
+            "fieldNumber": 1,
+            "name": "HOUSE NUMBER",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "NUMERIC",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "GREATER_THAN"
+                },
+                {
+                  "name": "LESS_THAN"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 2,
+            "name": "STREET DIRECTION",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 3,
+            "name": "STREET NAME",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 4,
+            "name": "STREET DESIGNATION",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 5,
+            "name": "SCAN DATE",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "DATE",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "AFTER"
+                },
+                {
+                  "name": "BEFORE"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 6,
+            "name": "BOX #",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "NUMERIC",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "GREATER_THAN"
+                },
+                {
+                  "name": "LESS_THAN"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 7,
+            "name": "FULL_TEXT",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "FULL_TEXT",
+              "filterTypes": [
+                {
+                  "name": "FULL_TEXT"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          }
+        ],
+        "notPublicFieldName": null,
+        "entityId": 1
+      },
+      {
+        "id": 7,
+        "name": "HISTORICAL_COMM-MEETING_MINUTES",
+        "displayName": "Meeting Minutes",
+        "attributes": [
+          {
+            "fieldNumber": 1,
+            "name": "DOCUMENT NAME",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 2,
+            "name": "DOCUMENT DATE",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "DATE",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "AFTER"
+                },
+                {
+                  "name": "BEFORE"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 3,
+            "name": "DOCUMENT TYPE",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 4,
+            "name": "MEETING NUMBER",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "NUMERIC",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "GREATER_THAN"
+                },
+                {
+                  "name": "LESS_THAN"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 5,
+            "name": "BODY",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 6,
+            "name": "COMMENT",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 7,
+            "name": "ARCHIVE DATE",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "DATE",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "AFTER"
+                },
+                {
+                  "name": "BEFORE"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 8,
+            "name": "FULL_TEXT",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "FULL_TEXT",
+              "filterTypes": [
+                {
+                  "name": "FULL_TEXT"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          }
+        ],
+        "notPublicFieldName": "NOT PUBLIC",
+        "entityId": 1
+      },
+      {
+        "id": 4,
+        "name": "HISTORICAL_COMM-PERMITS",
+        "displayName": "Permits",
+        "attributes": [
+          {
+            "fieldNumber": 1,
+            "name": "PERMIT NUMBER",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "NUMERIC",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "GREATER_THAN"
+                },
+                {
+                  "name": "LESS_THAN"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 2,
+            "name": "HOUSE NUMBER",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "NUMERIC",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "GREATER_THAN"
+                },
+                {
+                  "name": "LESS_THAN"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 3,
+            "name": "STREET DIRECTION",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 4,
+            "name": "STREET NAME",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 5,
+            "name": "STREET DESIGNATION",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 6,
+            "name": "LOCATION",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 7,
+            "name": "SCAN DATE",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "DATE",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "AFTER"
+                },
+                {
+                  "name": "BEFORE"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 8,
+            "name": "BOX #",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "NUMERIC",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "GREATER_THAN"
+                },
+                {
+                  "name": "LESS_THAN"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 9,
+            "name": "FULL_TEXT",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "FULL_TEXT",
+              "filterTypes": [
+                {
+                  "name": "FULL_TEXT"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          }
+        ],
+        "notPublicFieldName": null,
+        "entityId": 1
+      },
+      {
+        "id": 3,
+        "name": "HISTORICAL_COMM-POLAROIDS",
+        "displayName": "Polaroids",
+        "attributes": [
+          {
+            "fieldNumber": 1,
+            "name": "LOCATION",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "NUMERIC",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "GREATER_THAN"
+                },
+                {
+                  "name": "LESS_THAN"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 2,
+            "name": "SCAN DATE",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "DATE",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "AFTER"
+                },
+                {
+                  "name": "BEFORE"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 3,
+            "name": "BOX #",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "NUMERIC",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "GREATER_THAN"
+                },
+                {
+                  "name": "LESS_THAN"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 4,
+            "name": "FULL_TEXT",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "FULL_TEXT",
+              "filterTypes": [
+                {
+                  "name": "FULL_TEXT"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          }
+        ],
+        "notPublicFieldName": null,
+        "entityId": 1
+      },
+      {
+        "id": 5,
+        "name": "HISTORICAL_COMM-REGISTRY",
+        "displayName": "Registry",
+        "attributes": [
+          {
+            "fieldNumber": 1,
+            "name": "LOCATION",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "TEXT",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "STARTS_WITH"
+                },
+                {
+                  "name": "ENDS_WITH"
+                },
+                {
+                  "name": "CONTAINS"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 2,
+            "name": "SCAN DATE",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "DATE",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "AFTER"
+                },
+                {
+                  "name": "BEFORE"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 3,
+            "name": "BOX #",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "NUMERIC",
+              "filterTypes": [
+                {
+                  "name": "EQUALS"
+                },
+                {
+                  "name": "GREATER_THAN"
+                },
+                {
+                  "name": "LESS_THAN"
+                },
+                {
+                  "name": "BETWEEN"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          },
+          {
+            "fieldNumber": 4,
+            "name": "FULL_TEXT",
+            "filterValue1": null,
+            "filterValue2": null,
+            "type": {
+              "name": "FULL_TEXT",
+              "filterTypes": [
+                {
+                  "name": "FULL_TEXT"
+                }
+              ]
+            },
+            "selectedFilterType": null
+          }
+        ],
+        "notPublicFieldName": null,
+        "entityId": 1
+      }
+    ]
+  }
+]
