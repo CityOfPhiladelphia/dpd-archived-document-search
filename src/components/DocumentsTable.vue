@@ -1,5 +1,6 @@
 <template>
   <div class="minutes">
+    <Search />
     <table>
       <thead>
         <th>document name</th>
@@ -67,6 +68,7 @@ import Vue from "vue";
 import axios from "axios";
 import VueFuse from "vue-fuse";
 import VuePaginate from "vue-paginate";
+import Search from "./Search";
 
 Vue.use(VueFuse);
 Vue.use(VuePaginate);
@@ -270,20 +272,26 @@ const requestedCategory = {
 
 export default {
   name: "DocumentsTable",
-  components: {},
+  components: {
+    Search,
+  },
   filters: {},
   data: function() {
     return {
-      documentsList: state.entries,
+      documentsList: states.entries,
       paginate: [ "documentsList" ],
       entity: "Historical_Commission",
       category: "HISTORICAL_COMM-MEETING_MINUTES",
       requestedDocument: "",
     };
   },
-  computed: {},
+  computed: {
 
-  watch: {},
+  },
+
+  watch: {
+
+  },
 
   mounted: function() {
     this.requestDocumentsList();
@@ -320,7 +328,7 @@ export default {
         .post(endpoint, requestedCategory)
         .then(response => {
           this.documentsList = response.data;
-          console.log(endpoint, requestedCategory)
+          console.log(endpoint, requestedCategory);
         })
         .catch(e => {
           console.log(e);
@@ -344,3 +352,4 @@ export default {
   }
 }
 </style>
+

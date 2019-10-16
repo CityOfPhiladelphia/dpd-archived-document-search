@@ -1,11 +1,5 @@
 <template>
-  <div>
-    <Search />
-  
-    <EntitiesDropdown />
-    <EntityCategories />
-    <DocumentsTable />
-  </div>
+  <router-view />
 </template>
 
 <script>
@@ -14,18 +8,12 @@ import axios from "axios";
 import VueFuse from "vue-fuse";
 
 Vue.use(VueFuse);
-import DocumentsTable from "./components/DocumentsTable";
-import EntitiesDropdown from "./components/EntitiesDropdown";
-import EntityCategories from "./components/EntityCategories";
-import Search from "./components/Search";
+
 
 export default {
-  name: "ArchivedDocuments",
+  name: "ArchivedDocuments", 
   components: { 
-    DocumentsTable,
-    Search,
-    EntitiesDropdown,
-    EntityCategories,
+
   },
   filters: {
   

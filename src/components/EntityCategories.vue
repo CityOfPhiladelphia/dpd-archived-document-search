@@ -26,7 +26,7 @@ export default {
   data: function() {
     return {
       categoriesList: [],
-      categoryNames: [],
+      categoryNames: [ "Meeting Minutes" ],
       entity: "Historical_Commission",
       selectedCategory: "HISTORICAL_COMM-MEETING_MINUTES",
       selectedCategoryObject: {},
@@ -72,7 +72,6 @@ export default {
 };
 </script>
 
-<style lang="scss" >
-
+<style lang="scss">
 
 </style>
