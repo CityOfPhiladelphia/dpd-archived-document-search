@@ -1,6 +1,6 @@
 <template>
   <div class="search-wrapper">
-    <input type="search" />
+    <input type="search">
     <!-- Advanced Search component -->
     <div class="accordion-wrap">
       <div
@@ -12,10 +12,18 @@
         @click="toggle"
         @keyup.enter="toggle"
       >
-        <slot name="title">Advanced Search</slot>
+        <slot name="title">
+          Advanced Search
+        </slot>
       </div>
-      <div v-show="showContent" class="accordion-content" tabindex="0">
-        <slot name="content">Content</slot>
+      <div
+        v-show="showContent"
+        class="accordion-content"
+        tabindex="0"
+      >
+        <slot name="content">
+          Content
+        </slot>
       </div>
     </div>
   </div>
@@ -33,7 +41,7 @@ export default {
 
   data() {
     return {
-      showContent: false
+      showContent: false,
     };
   },
   computed: {},
@@ -43,8 +51,8 @@ export default {
     },
     makeID() {
       return this.accordionTitle.replace(/\s+/g, "-").toLowerCase();
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -26,14 +26,14 @@
             placeholder="Select an Entity"
           >
             <option
-              v-for="entity in entityNames"
-              :key="`${entity}`"
-              :value="entity"
-            >{{ entity }}</option>
+              v-for="entity in entitiesList"
+              :key="`${entity.name}`"
+              :value="entity.name"
+            >{{ entity.name | entityDisplay }}</option>
           </select>
         </label>
         <router-link 
-        :to="{name: 'categories', params : { entityName: makeID() }}"
+          :to="{name: 'categories', params : { entityName : selectedEntity }}"
         >
           <button 
             v-if="showConfirm"
@@ -66,12 +66,14 @@ export default {
   name: "EntitiesDropdown",
   components: {},
   filters: {
-
+    'entityDisplay' : function(val) {
+      return val.replace(/_/g, ' ');
+    },
   },
   data: function() {
     return {
       entitiesList: [],
-      entityNames: [],
+      // entityNames: [],
       selectedEntity: "",
       showConfirm: false,
     };
@@ -99,19 +101,19 @@ export default {
           console.log(e);
         })
         .finally(() => {
-          this.makeDropdownList();
+          // this.makeDropdownList();
         });
     },
 
     makeDropdownList: function() {
       this.entitiesList.forEach(entity => {
-        this.entityNames.push(entity.displayName);
+        this.entityNames.push(entity.name);
       });
     },
 
-     makeID() {
+    makeID() {
       return this.selectedEntity.replace(/\s+/g, "-").toLowerCase();
-    }
+    },
   },
 };
 </script>

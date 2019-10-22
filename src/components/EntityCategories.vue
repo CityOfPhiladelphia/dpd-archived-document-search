@@ -1,21 +1,24 @@
 <template>
-  <div class=categories-wrap>
+  <div class="categories-wrap">
     <div class="categories-title">
       <h1> Historical Commission document types</h1>
     </div>
     <div class="categories-list">
       <div 
-        v-for="category in categoryNames"
-        :key="category"
+        v-for="category in categoriesList"
+        :key="category.name"
         class="category-container"
       >
         <i class="fas fa-hourglass-start fa-3x" />
         <div class="category-info">
           <div class="category-title">
             <router-link 
-            :to="{name: 'documents', params: { entityName : entityName , selectedCategory : makeID(category) }}"
+              :to="{name: 'documents', 
+                    params: { entityName : entityName , 
+                              categoryName : makeID(category.displayName) , 
+                              categoryObject: category }}"
             >
-              <h2>  {{ category }} </h2>
+              <h2>  {{ category.displayName }} </h2>
             </router-link>
           </div>
           <div class="category-description">
@@ -50,19 +53,18 @@ export default {
   filters: {
   
   },
+
+  props: {
+    entityName : String,
+  },
   data: function() {
     return {
       categoriesList: [],
-      categoryNames: [ "Meeting Minutes" ],
-      entity: "Historical_Commission",
+      categoryNames: [],
       selectedCategory: "HISTORICAL_COMM-MEETING_MINUTES",
       selectedCategoryObject: {},
-      selectedCategory: "Meeting Minutes",
+      // selectedCategory: "Meeting Minutes",
     };
-  },
-
-  props : {
-    entityName: "" 
   },
   computed: { 
     
@@ -74,13 +76,13 @@ export default {
   },
 
   mounted: function() {
-    // this.getEntities();
+    this.getEntities();
   },
 
   methods: {
     getEntities: function() {
       axios
-        .get(endpoint + this.entity)
+        .get(endpoint + this.entityName)
         .then(response => {
           this.categoriesList = response.data;
         })
@@ -100,9 +102,9 @@ export default {
 
     },
 
-     makeID(val) {
-      return val.replace(/\s+/g, "-").toLowerCase();
-    }
+    makeID(val) {
+      return val.replace(/\s+/g, "_");
+    },
   },
 };
 </script>

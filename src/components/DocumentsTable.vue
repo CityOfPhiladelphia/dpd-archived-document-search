@@ -75,198 +75,6 @@ Vue.use(VuePaginate);
 
 const endpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/filtered-document-list/";
 const docEndpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/get-document/";
-const requestedCategory = {
-  "id": 7,
-  "name": "HISTORICAL_COMM-MEETING_MINUTES",
-  "displayName": "Meeting Minutes",
-  "attributes": [
-    {
-      "fieldNumber": 1,
-      "name": "DOCUMENT NAME",
-      "filterValue1": null,
-      "filterValue2": null,
-      "type": {
-        "name": "TEXT",
-        "filterTypes": [
-          {
-            "name": "EQUALS",
-          },
-          {
-            "name": "STARTS_WITH",
-          },
-          {
-            "name": "ENDS_WITH",
-          },
-          {
-            "name": "CONTAINS",
-          },
-        ],
-      },
-      "selectedFilterType": null,
-    },
-    {
-      "fieldNumber": 2,
-      "name": "DOCUMENT DATE",
-      "filterValue1": null,
-      "filterValue2": null,
-      "type": {
-        "name": "DATE",
-        "filterTypes": [
-          {
-            "name": "EQUALS",
-          },
-          {
-            "name": "AFTER",
-          },
-          {
-            "name": "BEFORE",
-          },
-          {
-            "name": "BETWEEN",
-          },
-        ],
-      },
-      "selectedFilterType": null,
-    },
-    {
-      "fieldNumber": 3,
-      "name": "DOCUMENT TYPE",
-      "filterValue1": null,
-      "filterValue2": null,
-      "type": {
-        "name": "TEXT",
-        "filterTypes": [
-          {
-            "name": "EQUALS",
-          },
-          {
-            "name": "STARTS_WITH",
-          },
-          {
-            "name": "ENDS_WITH",
-          },
-          {
-            "name": "CONTAINS",
-          },
-        ],
-      },
-      "selectedFilterType": null,
-    },
-    {
-      "fieldNumber": 4,
-      "name": "MEETING NUMBER",
-      "filterValue1": null,
-      "filterValue2": null,
-      "type": {
-        "name": "NUMERIC",
-        "filterTypes": [
-          {
-            "name": "EQUALS",
-          },
-          {
-            "name": "GREATER_THAN",
-          },
-          {
-            "name": "LESS_THAN",
-          },
-          {
-            "name": "BETWEEN",
-          },
-        ],
-      },
-      "selectedFilterType": null,
-    },
-    {
-      "fieldNumber": 5,
-      "name": "BODY",
-      "filterValue1": null,
-      "filterValue2": null,
-      "type": {
-        "name": "TEXT",
-        "filterTypes": [
-          {
-            "name": "EQUALS",
-          },
-          {
-            "name": "STARTS_WITH",
-          },
-          {
-            "name": "ENDS_WITH",
-          },
-          {
-            "name": "CONTAINS",
-          },
-        ],
-      },
-      "selectedFilterType": null,
-    },
-    {
-      "fieldNumber": 6,
-      "name": "COMMENT",
-      "filterValue1": null,
-      "filterValue2": null,
-      "type": {
-        "name": "TEXT",
-        "filterTypes": [
-          {
-            "name": "EQUALS",
-          },
-          {
-            "name": "STARTS_WITH",
-          },
-          {
-            "name": "ENDS_WITH",
-          },
-          {
-            "name": "CONTAINS",
-          },
-        ],
-      },
-      "selectedFilterType": null,
-    },
-    {
-      "fieldNumber": 7,
-      "name": "ARCHIVE DATE",
-      "filterValue1": null,
-      "filterValue2": null,
-      "type": {
-        "name": "DATE",
-        "filterTypes": [
-          {
-            "name": "EQUALS",
-          },
-          {
-            "name": "AFTER",
-          },
-          {
-            "name": "BEFORE",
-          },
-          {
-            "name": "BETWEEN",
-          },
-        ],
-      },
-      "selectedFilterType": null,
-    },
-    {
-      "fieldNumber": 8,
-      "name": "FULL_TEXT",
-      "filterValue1": null,
-      "filterValue2": null,
-      "type": {
-        "name": "FULL_TEXT",
-        "filterTypes": [
-          {
-            "name": "FULL_TEXT",
-          },
-        ],
-      },
-      "selectedFilterType": null,
-    },
-  ],
-  "notPublicFieldName": "NOT PUBLIC",
-  "entityId": 1,
-};
 
 export default {
   name: "DocumentsTable",
@@ -274,16 +82,22 @@ export default {
     Search,
   },
   filters: {},
+  props: {
+    entityName: String,
+    categoryName: String,
+    categoryObject: Object,
+  },
   data: function() {
     return {
       documentsList:[],
       paginate: [ "documentsList" ],
-      entity: "Historical_Commission",
+      // entity: "Historical_Commission",
       category: "HISTORICAL_COMM-MEETING_MINUTES",
       requestedDocument: "",
     };
   },
   computed: {
+  
 
   },
 
@@ -297,10 +111,10 @@ export default {
 
   methods: {
     requestFile: function(fileID) {
-      console.log(docEndpoint + this.entity + "/" + this.category + '/' + fileID);
+      console.log(docEndpoint + this.entityName + "/" + this.categoryObject.name + '/' + fileID);
       
       axios
-        .get(docEndpoint + this.entity + "/" + this.category + '/' + fileID , {
+        .get(docEndpoint + this.entityName + "/" + this.categoryObject.name + '/' + fileID , {
           headers: {
             'Accept': 'application/pdf',
           }, responseType : "blob",
@@ -323,7 +137,7 @@ export default {
 
     requestDocumentsList: function() {
       axios
-        .post(endpoint, requestedCategory)
+        .post(endpoint, this.categoryObject)
         .then(response => {
           this.documentsList = response.data.entries;
           // console.log(response.data.entries);
