@@ -14,24 +14,37 @@
           Massa ultricies mi quis hendrerit dolor magna eget est lorem.
           Vel risus commodo viverra maecenas. Varius duis at consectetur lorem donec.
           Ut venenatis tellus in metus vulputate eu.
-         </p>
+        </p>
+        <h4> Select an Entity:</h4>
+        <label
+          for="search-dropdown"
+          aria-label="Search Dropdown"
+        >
+          <select
+            id="search-dropdown"
+            v-model="selectedEntity"
+            placeholder="Select an Entity"
+          >
+            <option
+              v-for="entity in entityNames"
+              :key="`${entity}`"
+              :value="entity"
+            >{{ entity }}</option>
+          </select>
+        </label>
+        <router-link to="/Categories">
+          <button 
+            v-if="showConfirm"
+          >
+            Select Category
+          </button>
+        </router-link>
       </div>
       <div class="large-icon">
         <i class="fas fa-print-search fa-5x" />
+        <!-- <img src="../assets/icons/Archive-search.svg"> -->
       </div>
     </div>
-    <label for="search-dropdown" aria-label="Search Dropdown">
-      Select an Entity
-      <select
-        id="search-dropdown"
-        v-model="selectedEntity"
-        placeholder="Select an Entity"
-        @change="addConfirmButton()"
-      >
-        <option v-for="entity in entityNames" :key="`${entity}`" :value="entity">{{ entity }}</option>
-      </select>
-    </label>
-    <button v-if="showConfirm">Select Category</button>
   </div>
 </template>
 
@@ -54,14 +67,18 @@ export default {
   data: function() {
     return {
       entitiesList: [],
-      entityNames: ["Historical Commission"],
+      entityNames: [],
       selectedEntity: "",
-      showConfirm: false
+      showConfirm: false,
     };
   },
   computed: {},
 
-  watch: {},
+  watch: {
+    selectedEntity (val) {
+      this.showConfirm = (val && val != "") ? true : false;
+    },
+  },
 
   mounted: function() {
     this.getEntities();
@@ -87,11 +104,7 @@ export default {
         this.entityNames.push(entity.displayName);
       });
     },
-
-    addConfirmButton: function() {
-      this.showConfirm = true;
-    }
-  }
+  },
 };
 </script>
 
@@ -99,13 +112,17 @@ export default {
 .dropdown-container {
   width: 85%;
   margin: 0 auto;
+  padding: 50px;
 
   .top-container {
     display: flex;
     flex-direction: row;
     .large-icon {
-      width: 25%;
-      height: 100%;
+      padding: 50px;
+     i {
+       font-size: 20em;
+       color: black;
+     }
     }
   }
 

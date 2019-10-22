@@ -1,5 +1,5 @@
 <template>
-  <div class="minutes">
+  <div class="documents-container">
     <Search />
     <table>
       <thead>
@@ -72,8 +72,6 @@ import Search from "./Search";
 
 Vue.use(VueFuse);
 Vue.use(VuePaginate);
-
-import states from "../assets/meeting_minutes.json";
 
 const endpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/filtered-document-list/";
 const docEndpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/get-document/";
@@ -278,7 +276,7 @@ export default {
   filters: {},
   data: function() {
     return {
-      documentsList: states.entries,
+      documentsList:[],
       paginate: [ "documentsList" ],
       entity: "Historical_Commission",
       category: "HISTORICAL_COMM-MEETING_MINUTES",
@@ -327,8 +325,8 @@ export default {
       axios
         .post(endpoint, requestedCategory)
         .then(response => {
-          this.documentsList = response.data;
-          console.log(endpoint, requestedCategory);
+          this.documentsList = response.data.entries;
+          // console.log(response.data.entries);
         })
         .catch(e => {
           console.log(e);
@@ -340,10 +338,14 @@ export default {
 </script>
 
 <style lang="scss" >
-.minutes {
-  padding-bottom: 30px;
+.documents-container {
+  padding: 30px;
+  width: 85%;
+  margin: 0 auto;
+
+  
   table {
-    width: 85%;
+    // width: 85%;
     margin: 0 auto;
   }
   .paginate-links {

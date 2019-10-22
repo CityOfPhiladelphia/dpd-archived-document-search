@@ -12,7 +12,7 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   routes: [
     {
-      path: '/Entities',
+      path: '/',
       component: EntitiesDropdown,
     },
     {
@@ -21,7 +21,7 @@ const router = new VueRouter({
       props: true,
     },
     {
-      path: '/DocumentsTable',
+      path: '/Documents',
       component: DocumentsTable,
     },
    
