@@ -32,7 +32,9 @@
             >{{ entity }}</option>
           </select>
         </label>
-        <router-link to="/Categories">
+        <router-link 
+        :to="{name: 'categories', params : { entityName: makeID() }}"
+        >
           <button 
             v-if="showConfirm"
           >
@@ -63,7 +65,9 @@ const endpoint =
 export default {
   name: "EntitiesDropdown",
   components: {},
-  filters: {},
+  filters: {
+
+  },
   data: function() {
     return {
       entitiesList: [],
@@ -104,6 +108,10 @@ export default {
         this.entityNames.push(entity.displayName);
       });
     },
+
+     makeID() {
+      return this.selectedEntity.replace(/\s+/g, "-").toLowerCase();
+    }
   },
 };
 </script>

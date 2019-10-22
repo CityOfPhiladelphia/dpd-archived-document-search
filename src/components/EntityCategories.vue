@@ -12,7 +12,9 @@
         <i class="fas fa-hourglass-start fa-3x" />
         <div class="category-info">
           <div class="category-title">
-            <router-link to="/Documents">
+            <router-link 
+            :to="{name: 'documents', params: { entityName : entityName , selectedCategory : makeID(category) }}"
+            >
               <h2>  {{ category }} </h2>
             </router-link>
           </div>
@@ -55,8 +57,12 @@ export default {
       entity: "Historical_Commission",
       selectedCategory: "HISTORICAL_COMM-MEETING_MINUTES",
       selectedCategoryObject: {},
-     
+      selectedCategory: "Meeting Minutes",
     };
+  },
+
+  props : {
+    entityName: "" 
   },
   computed: { 
     
@@ -93,6 +99,10 @@ export default {
       });
 
     },
+
+     makeID(val) {
+      return val.replace(/\s+/g, "-").toLowerCase();
+    }
   },
 };
 </script>
