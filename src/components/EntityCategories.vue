@@ -1,14 +1,46 @@
 <template>
   <div class="categories-wrap">
+    <div class="bread-crumbs">
+      <router-link 
+        to="/"
+      >
+        <i class="fas fa-home" />
+      </router-link>
+      / {{ $route.params.entityName | removeUnderscore }}
+    </div>
     <div class="categories-title">
-      <h1> {{ entityName | removeUnderscore }} document types</h1>
+      <h1> {{ entityName | removeUnderscore }} documents</h1>
       <p>
         The <a href="https://www.phila.gov/departments/philadelphia-historical-commission/">Philadelphia Historical Commission </a>identifies and protects the City’s historic resources. The Mayor appoints the commissioners, who are supported by three advisory committees.
         As part of their work, the commission collects information about historic structures and produces documentation of their meetings. See the commission's public meetings page for the <a href="https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/">latest agendas, nominations, and more</a>.
       </p>
     </div>
-    <div class="categories-list">
+    <div
+      v-show="loading"
+      class="mtm center"
+    >
+      <i class="fas fa-spinner fa-spin fa-3x" />
+    </div>
+    <div
+      v-show="!loading && emptyResponse"
+      class="h3 mtm center"
+    >
+      Sorry, there are no results.
+    </div>
+    <div
+      v-show="failure"
+      class="h3 mtm center"
+    >
+      Sorry, there was a problem. Please try again.
+    </div>
+     
+     
+    <div
+      v-if="!loading && !emptyResponse && !failure"
+      class="categories-list"
+    >
       <div 
+       
         v-for="category in categoriesList"
         :key="category.name"
         class="category-container"
@@ -19,7 +51,7 @@
         />
         <i
           v-if="category.displayName !== 'Meeting Minutes'"
-          class="fas fa-file-check fa-3x"
+          class="fas fa-archive fa-3x"
         />
         <div class="category-info">
           <div class="category-title">
@@ -29,7 +61,7 @@
                               categoryName : makeID(category.displayName) , 
                               categoryObject: category }}"
             >
-              <h2>  {{ category.displayName }} </h2>
+              <h2>  {{ category.displayName | sentenceCase }} </h2>
             </router-link>
           </div>
           <div
@@ -54,10 +86,10 @@
 import Vue from "vue";
 import axios from "axios";
 import VueFuse from "vue-fuse";
-import VuePaginate from "vue-paginate";
+
 
 Vue.use(VueFuse);
-Vue.use(VuePaginate);
+
 
 const endpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/document-categories/";
 
@@ -70,7 +102,14 @@ export default {
     'removeUnderscore': function(val) {
       return val.replace(/_/g, ' ');
     },
-  
+
+    'sentenceCase': function(val) {
+      if (val) {
+        let lowercase = val.toLowerCase();
+        return lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
+      }
+
+    },
   },
 
   props: {
@@ -79,8 +118,11 @@ export default {
   data: function() {
     return {
       categoriesList: [],
-      categoryNames: [],
+      // categoryNames: [],
       selectedCategoryObject: {},
+      loading: true,
+      emptyResponse: true,
+      failure: false,
     };
   },
   computed: { 
@@ -103,21 +145,25 @@ export default {
         .get(endpoint + this.$route.params.entityName)
         .then(response => {
           this.categoriesList = response.data;
+          
+          this.loading = false;
+
+          this.emptyResponse = (this.categoriesList.length === 0) ? true : false;
+
         })
         .catch(e => {
           console.log(e);
+          this.failure = true;
+          this.loading = false;
         })
         .finally(() => {
+          //comment this out to display the entire list
           this.makeCategoriesList();
         });
     },
 
     makeCategoriesList: function() {
-     
-      this.categoriesList.forEach((category) => {
-        this.categoryNames.push(category.displayName);
-      });
-
+      this.categoriesList = this.categoriesList.filter(category => category.displayName === "Meeting Minutes");
     },
 
     makeID(val) {
@@ -132,7 +178,8 @@ export default {
 .categories-wrap {
   width: 85%;
   margin: 0 auto;
-  padding: 50px 100px;
+  padding: 30px;
+  padding-bottom:66px;
 
   .categories-list {
     display: flex;
@@ -150,6 +197,10 @@ export default {
 
       &:nth-last-child(1) {
        border-bottom: none;
+       &:first-child {
+         width: 100%;
+         border-right: none;
+       }
       }
 
       i {

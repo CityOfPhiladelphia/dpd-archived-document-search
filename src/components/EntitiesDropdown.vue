@@ -5,8 +5,11 @@
         <h1>About the archive</h1>
         <p>
           Use the archive to view documents created or collected by the <a href="https://www.phila.gov/departments/department-of-planning-and-development/"> Department of Planning and Development</a>. To begin, choose a division in the menu below.
+          <br>
+          <br>
           At this time, only select documents are included in the archive. You can search for <a href="https://www.phila.gov/documents/">recent publications</a> on phila.gov or use the <a href="https://www.phila.gov/departments/">City government directory</a> to contact your department of interest.
         </p>
+        <br>
         <h4>  Select a division:</h4>
         <label
           for="search-dropdown"
@@ -30,7 +33,7 @@
           <button 
             v-if="showConfirm"
           >
-            Select Category
+            View Documents
           </button>
         </router-link>
       </div>
@@ -114,7 +117,7 @@ export default {
 .dropdown-container {
   width: 85%;
   margin: 0 auto;
-  padding: 50px;
+  padding: 30px;
 
   .top-container {
     display: flex;
@@ -130,6 +133,10 @@ export default {
 
   #search-dropdown {
     width: 50%;
+  }
+
+  button {
+    cursor: pointer;
   }
 }
 </style>
