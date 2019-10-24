@@ -4,8 +4,14 @@
     top: 0;
     z-index: 100;
     max-height: 72px;
+
+   
 } 
 
+
+#application .site-header .logo img {
+    max-width: 250px;
+}
 .app-nav {
     position: sticky;
     top: 72px;
