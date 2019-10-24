@@ -1,14 +1,20 @@
 <template>
   <div class="documents-container">
+    <div class="page-title">
+      <h1> {{ categoryName | removeUnderscore }} </h1>
+      <p>
+        At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations. 
+      </p>
+    </div>
     <Search />
     <table>
       <thead>
-        <th>document name</th>
-        <th>entity</th>
-        <th>document date</th>
-        <th>meeting number</th>
-        <th>page count</th>
-        <th>format</th>
+        <th><h5> Document Name </h5></th>
+        <th><h5> Entity</h5></th>
+        <th><h5> Document date</h5></th>
+        <th><h5> Meeting number</h5></th>
+        <th><h5> Page count</h5></th>
+        <th><h5> Format</h5></th>
       </thead>
 
       <paginate
@@ -41,7 +47,7 @@
             <a
               href="#"
               @click="requestFile(minutes.id)"
-            >{{ minutes.id }}</a>
+            >{{ minutes.indexValues["DOCUMENT NAME"] | documentType }} <i class="fas fa-download" /> </a>
           </td>
         </tr>
       </paginate>
@@ -81,7 +87,18 @@ export default {
   components: {
     Search,
   },
-  filters: {},
+  filters: {
+    'documentType': function(val) {
+      if (val) {
+        return val.split('.').slice(-1).pop();
+      }
+    },
+
+    'removeUnderscore': function(val) {
+      return val.replace(/_/g, ' ');
+    },
+  
+  },
   props: {
     entityName: String,
     categoryName: String,
@@ -91,7 +108,6 @@ export default {
     return {
       documentsList:[],
       paginate: [ "documentsList" ],
-      // entity: "Historical_Commission",
       category: "HISTORICAL_COMM-MEETING_MINUTES",
       requestedDocument: "",
     };
@@ -161,6 +177,9 @@ export default {
   table {
     // width: 85%;
     margin: 0 auto;
+    h5 {
+      margin: 0;
+    }
   }
   .paginate-links {
     margin: 0 auto;

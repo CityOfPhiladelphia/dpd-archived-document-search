@@ -1,9 +1,23 @@
 <template>
   <div class="search-wrapper">
-    <input type="search">
+    <div class="search">
+      <input
+        id="search-bar"
+        v-model="search"
+        class="search-field"
+        type="text"
+        placeholder="Search by document name, document date, or meeting number"
+      ><input
+        ref="archive-search-bar"
+        type="submit"
+        class="search-submit"
+        value="Search"
+      >
+    </div>
     <!-- Advanced Search component -->
     <div class="accordion-wrap">
       <div
+        v-show="false"
         :class="{open : showContent}"
         class="accordion-title bg-ghost-gray"
         tabindex="0"
@@ -42,6 +56,7 @@ export default {
   data() {
     return {
       showContent: false,
+      search: '',
     };
   },
   computed: {},

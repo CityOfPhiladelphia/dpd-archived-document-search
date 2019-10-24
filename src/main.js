@@ -16,13 +16,13 @@ const router = new VueRouter({
       component: EntitiesDropdown,
     },
     {
-      path: '/:entityName/Categories/',
+      path: '/:entityName/',
       name: 'categories',
       component: EntityCategories,
       props: true,
     },
     {
-      path: '/:entityName/:categoryName/Documents',
+      path: '/:entityName/:categoryName/',
       name: 'documents',
       component: DocumentsTable,
       props: true,

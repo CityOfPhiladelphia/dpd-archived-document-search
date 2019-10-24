@@ -2,20 +2,12 @@
   <div class="dropdown-container">
     <div class="top-container">
       <div class="entity-info">
-        <h1>Information about the Tool</h1>
+        <h1>About the archive</h1>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore magna aliqua. Gravida in fermentum et sollicitudin
-          ac orci phasellus egestas. Cras pulvinar mattis nunc sed blandit libero volutpat sed cras.
-          Bibendum enim facilisis gravida neque. Arcu non odio euismod lacinia at.
-          Faucibus in ornare quam viverra orci sagittis. Sapien et ligula ullamcorper malesuada proin.
-          Tincidunt id aliquet risus feugiat in ante metus. Ullamcorper eget nulla facilisi etiam dignissim.
-          Elementum curabitur vitae nunc sed velit dignissim sodales.
-          Massa ultricies mi quis hendrerit dolor magna eget est lorem.
-          Vel risus commodo viverra maecenas. Varius duis at consectetur lorem donec.
-          Ut venenatis tellus in metus vulputate eu.
+          Use the archive to view documents created or collected by the <a href="https://www.phila.gov/departments/department-of-planning-and-development/"> Department of Planning and Development</a>. To begin, choose a division in the menu below.
+          At this time, only select documents are included in the archive. You can search for <a href="https://www.phila.gov/documents/">recent publications</a> on phila.gov or use the <a href="https://www.phila.gov/departments/">City government directory</a> to contact your department of interest.
         </p>
-        <h4> Select an Entity:</h4>
+        <h4>  Select a division:</h4>
         <label
           for="search-dropdown"
           aria-label="Search Dropdown"
