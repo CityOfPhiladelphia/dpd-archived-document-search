@@ -115,7 +115,7 @@ export default {
 
 <style lang="scss" >
 .dropdown-container {
-  width: 85%;
+  width: 85rem;
   margin: 0 auto;
   padding: 30px;
 
