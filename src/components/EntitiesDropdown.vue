@@ -96,7 +96,7 @@ export default {
           console.log(e);
         })
         .finally(() => {
-          // this.makeDropdownList();
+          this.selectedEntity = this.entitiesList[0].name;
         });
     },
 

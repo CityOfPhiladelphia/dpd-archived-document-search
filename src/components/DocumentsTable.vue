@@ -44,7 +44,6 @@
           role="region"
           :aria-expanded="showContent"
           @click="toggle"
-          @keyup.enter="toggle"
         >
           <slot name="title">
             Advanced Search
@@ -52,11 +51,85 @@
         </div>
         <div
           v-show="showContent"
-          class="accordion-content"
-          tabindex="0"
+          class="acc-content"
         >
-          <div class="full-text-search"> 
-            <input type="text">
+          <div class="advanced-filters">
+            <div class="full-search filter-category">
+              Search contents of documents
+              <div class="search">
+                <input
+                  type="text"
+                  class="search-field"
+                >
+                <input
+                  ref="archive-search-bar"
+                  type="submit"
+                  class="search-submit"
+                  value="Search"
+                >
+              </div>
+              <div class="entity-dropdown ">
+                Filter by entity
+                <label
+                  for="search-dropdown"
+                  aria-label="Search Dropdown"
+                >
+                  <select
+                    id="search-dropdown"
+                    v-model="selectedEntity"
+                    placeholder="Select an Entity"
+                  >
+                    <option
+                      :key="''"
+                      :value="''"
+                    >
+                      Show all entities
+                    </option>
+                    <option
+                      v-for="entity in entitiesList"
+                      :key="`${entity }`"
+                      :value="entity"
+                    >{{ entity | entityName }}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+           
+            <div class="date-search filter-category">
+              Show Results From
+              <div class="date-filter">
+                <datepicker
+                  v-model="start"
+                  name="start"
+                  placeholder="Start date"
+                  format="MMM. dd, yyyy"
+                 
+                  @closed="filterByDate"
+                /> 
+                <i class="fas fa-arrow-right" />
+                <datepicker
+                  v-model="end"
+                  name="end"
+                  placeholder="End date"
+                  format="MMM. dd, yyyy"
+                  
+                  @closed="filterByDate"
+                />
+              </div>
+              <div class="clear-button-wrap">
+                <button
+                  @click="clearAllFilters"
+                >
+                  Clear all filters
+                </button>
+                <button
+                  @click="filterByDate"
+                >
+                  Apply Search
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -86,11 +159,7 @@
     >
       <thead>
         <th><h5>Document Name</h5></th>
-        <th
-          class="table-sort entity"
-          :class="sortEntity"
-          @click="sort('BODY')"
-        >
+        <th>
           <h5>Entity</h5>
         </th>
         <th
@@ -128,7 +197,7 @@
             {{ minutes.indexValues["documentName"] }}
           </td>
           <td v-if="minutes.indexValues">
-            {{ minutes.indexValues["BODY"] }}
+            {{ minutes.indexValues["BODY"] | entityName }}
           </td>
           <td v-if="minutes.indexValues">
             {{ minutes.indexValues["documentDate"] }}
@@ -139,8 +208,8 @@
           <td>{{ minutes.pageCount }}</td>
           <td>
             <a
-              href="#"
-              @click="requestFile(minutes.id, minutes.indexValues[&quot;DOCUMENT NAME&quot;])"
+              class="download-link"
+              @click="requestFile(minutes.id, minutes.indexValues['documentName'])"
             >{{ minutes.indexValues["documentName"] | documentType }} <i class="fas fa-download" /> </a>
           </td>
         </tr>
@@ -151,6 +220,7 @@
         Showing <b> {{ filteredDocs.length }} </b> documents.
       </div>
       <paginate-links
+        v-if="filteredDocs.length > 0"
         class="app-pages"
         for="filteredDocs"
         :async="true"
@@ -172,6 +242,7 @@ import axios from "axios";
 import VueFuse from "vue-fuse";
 import VuePaginate from "vue-paginate";
 import moment from "moment";
+import Datepicker from 'vuejs-datepicker';
 
 Vue.use(VueFuse);
 Vue.use(VuePaginate);
@@ -184,6 +255,7 @@ const fullListEndpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/d
 export default {
   name: "DocumentsTable",
   components: {
+    Datepicker,
   },
   filters: {
     'documentType': function(val) {
@@ -201,6 +273,24 @@ export default {
         let lowercase = val.toLowerCase();
         return lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
       }
+    },
+
+    'entityName': function(val) {
+      if (val ==='HC') {
+        return 'Historical Commission';
+      } else if (val === 'CHD') {
+        return ' Committee on Historic Designation';
+      } else if (val === 'CFH') {
+        return 'Committee on Financial Hardship';
+      } else if (val === 'AC') {
+        return 'Architectural Committee';
+      } else if (val === 'COC') {
+        return 'Committee on Certification';
+      } else if (val === 'HVC') {
+        return 'Historical Values Committee';
+      } 
+      return val;
+      
     },
   
   },
@@ -224,6 +314,12 @@ export default {
       currentSortDir: 'desc',
       showContent: false,
       search: '',
+      entitiesList: [],
+      start: '',
+      end: '',
+      advancedSearch: '',
+      
+      selectedEntity: '',
       searchOptions: {
         threshold: 0.2,
         keys: [
@@ -240,14 +336,6 @@ export default {
         return  "HISTORICAL_COMM-" + this.$route.params.categoryName.toUpperCase();
       } 
       return this.category;
-      
-    },
-
-    sortEntity: function(){
-      if (this.currentSort == 'BODY') {
-        return this.currentSortDir;
-      } 
-      return "";
       
     },
 
@@ -274,6 +362,10 @@ export default {
       } else {
         this.filteredDocs = this.documentsList; 
       }
+    },
+
+    selectedEntity(val) {
+      this.filterByEntity();
     },
   },
 
@@ -342,10 +434,25 @@ export default {
           this.loading = false;
           this.emptyResponse = false;
         })
-        .finally(() => {});
+        .finally(() => {
+        
+        });
     },
 
+    makeEntitiesList: function() {
+      
+      let tempList =[];
+      this.documentsList.forEach((document)=> {
+        let val = document.indexValues["BODY"];
+        // console.log(val);
+        if (!tempList.includes(val)) {
+          tempList.push(val);
+        }
+      });
 
+      this.entitiesList = tempList.sort();
+
+    },
     requestFullDocumentsList: function() {
       axios
         .get(fullListEndpoint + this.$route.params.entityName + "/" + this.endpointCategoryName)
@@ -375,6 +482,7 @@ export default {
         })
         .finally(() => {
           this.sortPosts();
+          this.makeEntitiesList();
         });
     },
 
@@ -392,6 +500,58 @@ export default {
         .finally(() => {});
     },
 
+    filter() {
+      
+
+    },
+
+    filterByDate: function () {
+      if ((this.start !== '' ) && (this.end !== '')) {
+        let queryStart = moment(this.start.setHours(0,0,0,0)).unix(); //convert to 12:00AM of the start date
+        let queryEnd = moment(this.end.setHours(23,59,59,0)).unix(); //convert to 11:59pm of the end date
+
+        if (queryEnd < queryStart) {
+          this.failure = true;
+          this.filteredDocs = [];
+        } else {
+          this.failure = false;
+          let dateDocs = [];
+          this.filteredDocs.forEach((document) => {
+            let docDate = moment(document.indexValues['documentDate']).unix();
+            if ((docDate >= queryStart) && (docDate <= queryEnd )) {
+              dateDocs.push(document);
+            }
+          });
+          this.filteredDocs = dateDocs;
+        }
+      } else {
+        this.filteredDocs = this.documentsList;
+      }
+    },
+    
+    filterByEntity : function()  {
+      if (this.selectedEntity) {
+        let tempDocs = [];
+        console.log('here');
+        this.documentsList.forEach((document)=> {
+          if (document.indexValues["BODY"] === this.selectedEntity) {
+            tempDocs.push(document);
+          }
+        });
+        this.filteredDocs = tempDocs; 
+      } else {
+        this.filteredDocs = this.documentsList;
+      }
+    },
+
+    clearAllFilters : function() {
+      this.selectedEntity = '';
+      this.start = '';
+      this.search = '';
+      this.end = '';
+      this.advancedSearch - '';
+    }, 
+
     sort: function(column) {
       //if column == current sort, reverse
       if(column === this.currentSort) {
@@ -404,21 +564,7 @@ export default {
 
     sortPosts: function() {
       
-      if (this.currentSort === "BODY") {
-        this.filteredDocs = this.filteredDocs.sort((a,b) => {
-          let modifier = 1;
-          if(this.currentSortDir === 'desc') {
-            modifier = -1;
-          }
-          if(a.indexValues[this.currentSort] < b.indexValues[this.currentSort]) {
-            return -1 * modifier;
-          }
-          if(a.indexValues[this.currentSort] > b.indexValues[this.currentSort]) {
-            return 1 * modifier;
-          }
-          return 0;
-        });
-      } else if (this.currentSort === "documentDate") {
+      if (this.currentSort === "documentDate") {
          
         this.filteredDocs = this.filteredDocs.sort((a,b) => {
           let modifier = 1;
@@ -457,10 +603,7 @@ export default {
     toggle() {
       this.showContent = !this.showContent;
     },
-    makeID() {
-      return this.accordionTitle.replace(/\s+/g, "-").toLowerCase();
-    },
-
+  
     
   },
 };
@@ -489,8 +632,51 @@ export default {
       right: 2rem;
     }
   }
-  .accordion-content {
+  .acc-content {
+    background-color:#f0f0f0 ;
     padding: 1rem;
+
+    .advanced-filters {
+      display: flex;
+      justify-content: space-between;
+
+      .filter-category{
+        width: 50%;
+        padding: 10px;
+      
+        
+        .date-filter {
+          height: 50%;
+          padding: 10px;
+          display: flex;
+          justify-content: space-between;
+
+         
+          .vdp-datepicker [type='text'] {
+            height: 2.4rem;
+           
+          }
+          .vdp-datepicker input:read-only{
+            background: white;
+            cursor: pointer;
+          }
+        }
+
+        .clear-button-wrap {
+            height: 50%;
+            
+
+            button {
+              float: right;
+              margin-left: 10px;
+            }
+          
+        }
+        .entity-dropdown {
+          width: 100%;
+        }
+      }
+    }
   }
 }
 
@@ -511,6 +697,10 @@ export default {
     margin: 0 auto;
     h5 {
       margin: 0;
+    }
+
+    .download-link {
+      font-weight: bold;
     }
   }
   .table-pagination {
