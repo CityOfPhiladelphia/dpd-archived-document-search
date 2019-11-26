@@ -18,6 +18,9 @@
       <p>
         At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations. 
       </p>
+      <p>
+        Use the advanced search to filter your results by date or entity. You can also search the contents of the available documents.
+      </p>
     </div>
     <div class="search-wrapper">
       <div class="search">
@@ -26,7 +29,7 @@
           v-model="search"
           class="search-field"
           type="text"
-          placeholder="Search by document name, document date, or meeting number"
+          placeholder="Search by document name or meeting number"
         ><input
           ref="archive-search-bar"
           type="submit"
@@ -58,8 +61,10 @@
               Search contents of documents
               <div class="search">
                 <input
+                  v-model="advancedSearch"
                   type="text"
                   class="search-field"
+                  placeholder=" Enter a keyword or phrase (ex. “City Hall”)"
                 >
                 <input
                   ref="archive-search-bar"
@@ -94,28 +99,22 @@
                 </label>
               </div>
             </div>
-
-           
             <div class="date-search filter-category">
-              Show Results From
+              Show results from
               <div class="date-filter">
-                <datepicker
+                <input
                   v-model="start"
-                  name="start"
-                  placeholder="Start date"
-                  format="MMM. dd, yyyy"
-                 
-                  @closed="filterByDate"
-                /> 
-                <i class="fas fa-arrow-right" />
-                <datepicker
+                  type="date"
+                  min="1956-01-01"
+                  max="2019-12-31"
+                >
+                <p> to </p>
+                <input
                   v-model="end"
-                  name="end"
-                  placeholder="End date"
-                  format="MMM. dd, yyyy"
-                  
-                  @closed="filterByDate"
-                />
+                  type="date"
+                  min="1956-01-01"
+                  max="2019-12-31"
+                >
               </div>
               <div class="clear-button-wrap">
                 <button
@@ -124,7 +123,7 @@
                   Clear all filters
                 </button>
                 <button
-                  @click="filterByDate"
+                  @click="filter()"
                 >
                   Apply Search
                 </button>
@@ -158,7 +157,7 @@
       class="table-container"
     >
       <thead>
-        <th><h5>Document Name</h5></th>
+        <th><h5>Document name</h5></th>
         <th>
           <h5>Entity</h5>
         </th>
@@ -200,7 +199,7 @@
             {{ minutes.indexValues["BODY"] | entityName }}
           </td>
           <td v-if="minutes.indexValues">
-            {{ minutes.indexValues["documentDate"] }}
+            {{ minutes.indexValues["documentDate"] | dateDisplay }}
           </td>
           <td v-if="minutes.indexValues">
             {{ minutes.indexValues["meetingNumber"] }}
@@ -242,22 +241,55 @@ import axios from "axios";
 import VueFuse from "vue-fuse";
 import VuePaginate from "vue-paginate";
 import moment from "moment";
-import Datepicker from 'vuejs-datepicker';
 
 Vue.use(VueFuse);
 Vue.use(VuePaginate);
+Vue.use(moment);
+
 
 const endpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/filtered-document-list/";
 const docEndpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/get-document/";
 const catEndpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/document-categories/";
 const fullListEndpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/document-list/";
 
+const fullBodyFilter = {
+  "id": 7,
+  "name": "HISTORICAL_COMM-MEETING_MINUTES",
+  "displayName": "Meeting Minutes",
+  "attributes": [
+    {
+      "fieldNumber": 8,
+      "name": "FULL_TEXT",
+      "filterValue1": null,
+      "filterValue2": null,
+      "type": {
+        "name": "FULL_TEXT",
+        "filterTypes": [
+          {
+            "name": "FULL_TEXT",
+          },
+        ],
+      },
+      "selectedFilterType": {
+        "name": "FULL_TEXT",
+      },
+    },
+  ],
+  "entityId": 1,
+};
+
 export default {
   name: "DocumentsTable",
   components: {
-    Datepicker,
   },
   filters: {
+
+    dateDisplay: function(val) {
+      var year =  moment().year(); //get current year
+      let parsedDate =  moment(val , "MM-DD-YYYY");
+      return parsedDate.format("MMMM D, YYYY") ;
+    },
+    
     'documentType': function(val) {
       if (val) {
         return val.split('.').slice(-1).pop();
@@ -290,22 +322,24 @@ export default {
         return 'Historical Values Committee';
       } 
       return val;
-      
     },
   
   },
   props: {
     entityName: String,
     categoryName: String,
-    categoryObject: Object,
   },
   data: function() {
     return {
       loading: true,
-      emptyResponse: true,
+      emptyResponse: false,
       failure: false,
       documentsList:[],
       filteredDocs: [],
+      fullTextDocs: [],
+      entityDocs:[],
+      dateDocs:[],
+      searchDocs: [],
       paginate: [ "filteredDocs" ],
       category: "HISTORICAL_COMM-MEETING_MINUTES",
       requestedDocument: "",
@@ -365,29 +399,37 @@ export default {
     },
 
     selectedEntity(val) {
-      this.filterByEntity();
+      // this.filterByEntity();
+    },
+
+    advancedSearch(val) {
+      // this.filterFullText();
     },
   },
 
   mounted: function() {
     this.requestFullDocumentsList();
-    if (!this.$route.params.categoryObject) {
-      this.requestCategoryObject();
-      console.log(this.$route.params.categoryObject);
-      console.log(this.$route.params.entityName);
-    }
+    // console.log(this.$props.categoryObject);
+    // if (!this.$route.params.categoryObject) {
+    //   this.requestCategoryObject();
+    //   console.log(this.$route.params.categoryObject);
+    //   console.log(this.$route.params.entityName);
+    // }
   },
 
   methods: {
 
     filterBySearch: function() {
       if (this.search) {
+        let tempDocs = [];
         this.filteredDocs = [];
         
-        this.$search(this.search, this.documentsList, this.searchOptions).then(documents => {
+        this.$search(this.search, this.entityDocs, this.searchOptions).then(documents => {
           // console.log(this.search);
           this.filteredDocs = documents;
         });
+      } else {
+        this.filteredDocs = this.entityDocs;
       }
     
     },
@@ -417,25 +459,32 @@ export default {
         });
     },
 
-    requestDocumentsList: function() {
+    requestDocumentsList: function(postObj) {
       axios
-        .post(endpoint, this.categoryObject)
+        .post(endpoint, postObj)
         .then(response => {
-          this.documentsList = response.data.entries;
-          // console.log(response.data.entries);
-          this.loading = false;
+          if (response.data.entries) {
+            this.fullTextDocs = response.data.entries;
+            // console.log(response.data.entries);
+          
 
-          this.emptyResponse = (this.documentsList.length === 0) ? true : false;
+            this.fullTextDocs.forEach(document => {
+              let o = document;
+              //replacing keys with spaces to camelCase to make searching etc easier
+              delete Object.assign(o.indexValues, { ["documentName"]: o.indexValues["DOCUMENT NAME"] })["DOCUMENT NAME"];
+              delete Object.assign(o.indexValues, { ["meetingNumber"]: o.indexValues["MEETING NUMBER"] })["MEETING NUMBER"];
+              delete Object.assign(o.indexValues, { ["documentDate"]: o.indexValues["DOCUMENT DATE"] })["DOCUMENT DATE"];
+            });
+
+          }
 
         })
         .catch(e => {
           console.log(e);
-          this.failure = true;
-          this.loading = false;
-          this.emptyResponse = false;
+         
         })
         .finally(() => {
-        
+          this.filterOnFullText();
         });
     },
 
@@ -468,10 +517,12 @@ export default {
           });
 
           this.filteredDocs = this.documentsList;
+          this.fullTextDocs = this.documentsList;
+          this.entityDocs = this.documentsList;
           // console.log(response.data.entries);
           this.loading = false;
 
-          this.emptyResponse = (this.documentsList.length === 0) ? true : false;
+          this.emptyResponse = (this.documentsList.length) ? false : true;
 
         })
         .catch(e => {
@@ -497,35 +548,54 @@ export default {
         .catch(e => {
           
         })
-        .finally(() => {});
+        .finally(() => {
+          // this.props.categoryObject
+        });
     },
 
-    filter() {
+    filter: function(){
+      if (this.advancedSearch) {
+        let postObject = fullBodyFilter;
+        postObject.attributes[0].filterValue1 = this.advancedSearch;
+        console.log(postObject);
+        this.requestDocumentsList(postObject);
       
-
+      } else {
+        this.fullTextDocs = this.documentsList;
+        this.filterOnFullText();
+      }
     },
+
+    filterOnFullText: async function() {
+      await this.filterByDate();
+      await this.filterByEntity();
+      await this.filterBySearch();
+      await this.sortPosts();
+    }, 
 
     filterByDate: function () {
-      if ((this.start !== '' ) && (this.end !== '')) {
-        let queryStart = moment(this.start.setHours(0,0,0,0)).unix(); //convert to 12:00AM of the start date
-        let queryEnd = moment(this.end.setHours(23,59,59,0)).unix(); //convert to 11:59pm of the end date
+      if ((this.start) && (this.end)) {
+        let queryStart = moment(this.start).unix(); 
+        let queryEnd = moment(this.end).unix(); 
 
         if (queryEnd < queryStart) {
           this.failure = true;
           this.filteredDocs = [];
         } else {
           this.failure = false;
-          let dateDocs = [];
-          this.filteredDocs.forEach((document) => {
+          let tempDocs = [];
+          this.fullTextDocs.forEach((document) => {
             let docDate = moment(document.indexValues['documentDate']).unix();
             if ((docDate >= queryStart) && (docDate <= queryEnd )) {
-              dateDocs.push(document);
+              tempDocs.push(document);
             }
           });
-          this.filteredDocs = dateDocs;
+          this.dateDocs = tempDocs;
         }
       } else {
-        this.filteredDocs = this.documentsList;
+        // console.log(this.fullTextDocs);
+
+        this.dateDocs = this.fullTextDocs;
       }
     },
     
@@ -533,23 +603,25 @@ export default {
       if (this.selectedEntity) {
         let tempDocs = [];
         console.log('here');
-        this.documentsList.forEach((document)=> {
+        this.dateDocs.forEach((document)=> {
           if (document.indexValues["BODY"] === this.selectedEntity) {
             tempDocs.push(document);
           }
         });
-        this.filteredDocs = tempDocs; 
+        this.entityDocs = tempDocs; 
       } else {
-        this.filteredDocs = this.documentsList;
+        this.entityDocs = this.dateDocs;
       }
     },
 
-    clearAllFilters : function() {
+    clearAllFilters : async function() {
       this.selectedEntity = '';
       this.start = '';
       this.search = '';
       this.end = '';
-      this.advancedSearch - '';
+      this.advancedSearch = '';
+
+      await this.filter();
     }, 
 
     sort: function(column) {
@@ -603,7 +675,6 @@ export default {
     toggle() {
       this.showContent = !this.showContent;
     },
-  
     
   },
 };
@@ -623,15 +694,8 @@ export default {
     padding: 1.15rem 1rem;
     border-bottom: 1px solid #ccc;
     position: relative;
-
-    &:after {
-      font-family: "Font Awesome 5 Pro";
-      font-weight: 900;
-      position: absolute;
-      top: calc(50% - 13px);
-      right: 2rem;
-    }
   }
+
   .acc-content {
     background-color:#f0f0f0 ;
     padding: 1rem;
@@ -647,18 +711,14 @@ export default {
         
         .date-filter {
           height: 50%;
-          padding: 10px;
+          // padding: 10px 0px;
           display: flex;
           justify-content: space-between;
 
          
-          .vdp-datepicker [type='text'] {
-            height: 2.4rem;
-           
-          }
-          .vdp-datepicker input:read-only{
-            background: white;
-            cursor: pointer;
+          input[type='date'] {
+            background-color: white;
+           width: 33%;
           }
         }
 
@@ -693,8 +753,15 @@ export default {
   }
 
   table {
-    // width: 85%;
     margin: 0 auto;
+
+    .table-sort.asc h5:after {
+        content: '   \25B2';
+      }
+    .table-sort.desc h5:after {
+      content: '   \25BC';
+    }
+
     h5 {
       margin: 0;
     }

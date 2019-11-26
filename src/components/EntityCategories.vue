@@ -58,8 +58,7 @@
             <router-link 
               :to="{name: 'documents', 
                     params: { entityName : entityName , 
-                              categoryName : makeID(category.displayName) , 
-                              categoryObject: category }}"
+                              categoryName : makeID(category.displayName) } }"
             >
               <h2>  {{ category.displayName | sentenceCase }} </h2>
             </router-link>
