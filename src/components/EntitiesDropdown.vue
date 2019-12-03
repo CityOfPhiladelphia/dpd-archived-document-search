@@ -38,8 +38,8 @@
         </router-link>
       </div>
       <div class="large-icon">
-        <i class="fas fa-print-search fa-5x" />
-        <!-- <img src="../assets/icons/Archive-search.svg"> -->
+        <!-- <i class="fas fa-print-search fa-5x" /> -->
+        <img src="../assets/icons/Archive-search.png"> 
       </div>
     </div>
   </div>

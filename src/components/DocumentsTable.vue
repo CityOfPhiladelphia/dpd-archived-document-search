@@ -118,15 +118,17 @@
               </div>
               <div class="clear-button-wrap">
                 <button
-                  @click="clearAllFilters"
-                >
-                  Clear all filters
-                </button>
-                <button
                   @click="filter()"
                 >
                   Apply Search
                 </button>
+                <button
+                class="clear-button"
+                  @click="clearAllFilters"
+                >
+                  Clear all filters
+                </button>
+                
               </div>
             </div>
           </div>
@@ -137,6 +139,15 @@
       v-show="loading"
       class="mtm center"
     >
+      <i class="fas fa-spinner fa-spin fa-3x" />
+    </div>
+    <div
+      v-show="downloading"
+      class="mtm mbl center"
+    >
+    <div>
+      Downloading {{ fileName }}
+    </div>
       <i class="fas fa-spinner fa-spin fa-3x" />
     </div>
     <div
@@ -169,9 +180,9 @@
           <h5>Document date</h5>
         </th>
         <th
-          class="table-sort minutes"
+          class=" minutes"
           :class="sortNumber"
-          @click="sort('meetingNumber')"
+          
         >
           <h5>Meeting number</h5>
         </th>
@@ -334,6 +345,8 @@ export default {
       loading: true,
       emptyResponse: false,
       failure: false,
+      downloading: false,
+      fileName: "",
       documentsList:[],
       filteredDocs: [],
       fullTextDocs: [],
@@ -398,23 +411,10 @@ export default {
       }
     },
 
-    selectedEntity(val) {
-      // this.filterByEntity();
-    },
-
-    advancedSearch(val) {
-      // this.filterFullText();
-    },
   },
 
   mounted: function() {
     this.requestFullDocumentsList();
-    // console.log(this.$props.categoryObject);
-    // if (!this.$route.params.categoryObject) {
-    //   this.requestCategoryObject();
-    //   console.log(this.$route.params.categoryObject);
-    //   console.log(this.$route.params.entityName);
-    // }
   },
 
   methods: {
@@ -436,7 +436,8 @@ export default {
 
     requestFile: function(fileID, fileName) {
       console.log(docEndpoint + this.$route.params.entityName + "/" + this.endpointCategoryName + '/' + fileID);
-      
+      this.downloading = true;
+      this.fileName = fileName;
       axios
         .get(docEndpoint + this.$route.params.entityName + "/" + this.endpointCategoryName + '/' + fileID , {
           headers: {
@@ -455,7 +456,7 @@ export default {
           console.log(e);
         })
         .finally(() => {
-          
+          this.downloading = false;
         });
     },
 
@@ -657,16 +658,31 @@ export default {
           if(this.currentSortDir === 'desc') {
             modifier = -1;
           }
-          console.log(Number.parseInt(a.indexValues[this.currentSort], 10));
-          console.log(Number.parseInt(b.indexValues[this.currentSort], 10));
-     
-          if(!isNaN(Number.parseInt(a.indexValues[this.currentSort], 10)) < !isNaN(Number.parseInt(b.indexValues[this.currentSort], 10))) {
+          let newA = Number.parseInt(a.indexValues[this.currentSort], 10);
+          let newB = Number.parseInt(b.indexValues[this.currentSort], 10);
+
+    
+        // if(isNaN(newA)) { 
+        //   return 0;
+        // } else if isN{
+        //   return newA-newB * modifier; 
+        // } 
+        // // return 0;
+        
+
+
+          if(!isNaN(newA) < !isNaN(newB)) {
             return -1 * modifier;
           }
-          if(!isNaN(Number.parseInt(a.indexValues[this.currentSort], 10))  > !isNaN(Number.parseInt(b.indexValues[this.currentSort], 10))) {
+          if(!isNaN(newA)  > !isNaN(newB)) {
             return 1 * modifier;
-          }
-          return 0;
+          } else if (isNaN(newA) || isNaN(newB)) {
+            return 0;
+          } 
+          
+          
+        
+        
         });
       }
       this.loading = false;
@@ -729,6 +745,17 @@ export default {
             button {
               float: right;
               margin-left: 10px;
+            }
+
+            .clear-button {
+              background-color: transparent;
+              text-decoration: underline;
+              color: black;
+              //color: white;
+              &:hover {
+                background-color: transparent;
+                color: grey;
+              }
             }
           
         }
