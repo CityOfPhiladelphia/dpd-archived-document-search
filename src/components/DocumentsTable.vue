@@ -36,6 +36,13 @@
           class="search-submit"
           value="Search"
         >
+        <button
+          v-if="search.length > 0"
+          class="clear-search-btn"
+          @click="clearSearchBar"
+        >
+          <i class="fas fa-times " />
+        </button>
       </div>
       <!-- Advanced Search component -->
       <div class="accordion-wrap">
@@ -179,11 +186,7 @@
         >
           <h5>Document date</h5>
         </th>
-        <th
-          class=" minutes"
-          :class="sortNumber"
-          
-        >
+        <th>
           <h5>Meeting number</h5>
         </th>
         <th><h5>Page count</h5></th>
@@ -388,13 +391,6 @@ export default {
 
     sortDate: function(){
       if (this.currentSort == 'documentDate'){
-        return this.currentSortDir;
-      } 
-      return "";
-    },
-
-    sortNumber: function(){
-      if (this.currentSort == 'meetingNumber'){
         return this.currentSortDir;
       } 
       return "";
@@ -625,6 +621,10 @@ export default {
       await this.filter();
     }, 
 
+    clearSearchBar: function () {
+      this.search = "";
+    },
+
     sort: function(column) {
       //if column == current sort, reverse
       if(column === this.currentSort) {
@@ -652,39 +652,7 @@ export default {
           }
           return 0;
         });
-      } else if (this.currentSort === "meetingNumber") {
-        let modifier = 1;
-        this.filteredDocs = this.filteredDocs.sort((a,b) => {
-          if(this.currentSortDir === 'desc') {
-            modifier = -1;
-          }
-          let newA = Number.parseInt(a.indexValues[this.currentSort], 10);
-          let newB = Number.parseInt(b.indexValues[this.currentSort], 10);
-
-    
-        // if(isNaN(newA)) { 
-        //   return 0;
-        // } else if isN{
-        //   return newA-newB * modifier; 
-        // } 
-        // // return 0;
-        
-
-
-          if(!isNaN(newA) < !isNaN(newB)) {
-            return -1 * modifier;
-          }
-          if(!isNaN(newA)  > !isNaN(newB)) {
-            return 1 * modifier;
-          } else if (isNaN(newA) || isNaN(newB)) {
-            return 0;
-          } 
-          
-          
-        
-        
-        });
-      }
+      } 
       this.loading = false;
     },
 
@@ -700,6 +668,19 @@ export default {
 
 .search-wrapper {
   padding-bottom: 1rem;
+
+     .clear-search-btn {
+      position: absolute;
+      top:16px;
+      right: 70px;
+      padding: 0;
+      font-size: 20px;
+      background-color: #fff;
+      opacity: 0.8;
+      z-index: 999;
+      cursor: pointer;
+      color: rgba(60, 60, 60, 0.5);
+      }
   
   .accordion-title {
     cursor: pointer;
