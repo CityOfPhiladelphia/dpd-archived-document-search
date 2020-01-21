@@ -124,6 +124,7 @@ export default {
     flex-direction: row;
     .large-icon {
       padding: 50px;
+      max-width: 40%;
      i {
        font-size: 20em;
        color: black;

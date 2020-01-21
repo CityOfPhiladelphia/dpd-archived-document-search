@@ -54,6 +54,7 @@
           role="region"
           :aria-expanded="showContent"
           @click="toggle"
+          @keyup.enter="toggle"
         >
           <slot name="title">
             Advanced Search
@@ -89,6 +90,7 @@
                   <select
                     id="search-dropdown"
                     v-model="selectedEntity"
+                    tabindex="0"
                     placeholder="Select an Entity"
                   >
                     <option
@@ -125,17 +127,16 @@
               </div>
               <div class="clear-button-wrap">
                 <button
-                  @click="filter()"
-                >
-                  Apply Search
-                </button>
-                <button
-                class="clear-button"
+                  class="clear-button"
                   @click="clearAllFilters"
                 >
                   Clear all filters
                 </button>
-                
+                <button
+                  @click="filter()"
+                >
+                  Apply Search
+                </button>
               </div>
             </div>
           </div>
@@ -152,9 +153,9 @@
       v-show="downloading"
       class="mtm mbl center"
     >
-    <div>
-      Downloading {{ fileName }}
-    </div>
+      <div>
+        Downloading {{ fileName }}
+      </div>
       <i class="fas fa-spinner fa-spin fa-3x" />
     </div>
     <div
@@ -222,7 +223,9 @@
           <td>
             <a
               class="download-link"
+              tabindex="0"
               @click="requestFile(minutes.id, minutes.indexValues['documentName'])"
+              @keyup.enter="requestFile(minutes.id, minutes.indexValues['documentName'])"
             >{{ minutes.indexValues["documentName"] | documentType }} <i class="fas fa-download" /> </a>
           </td>
         </tr>
@@ -297,7 +300,6 @@ export default {
   components: {
   },
   filters: {
-
     dateDisplay: function(val) {
       var year =  moment().year(); //get current year
       let parsedDate =  moment(val , "MM-DD-YYYY");
@@ -322,26 +324,33 @@ export default {
     },
 
     'entityName': function(val) {
-      if (val ==='HC') {
+      switch (val) {
+      case 'HC':
         return 'Historical Commission';
-      } else if (val === 'CHD') {
-        return ' Committee on Historic Designation';
-      } else if (val === 'CFH') {
+      case 'CHD' :
+        return 'Committee on Historic Designation';
+      case 'CFH' :
         return 'Committee on Financial Hardship';
-      } else if (val === 'AC') {
+      case 'AC' :
         return 'Architectural Committee';
-      } else if (val === 'COC') {
+      case 'COC' :
         return 'Committee on Certification';
-      } else if (val === 'HVC') {
+      case 'HVC' :
         return 'Historical Values Committee';
-      } 
-      return val;
+      default:
+        return val;
+      }
     },
-  
   },
   props: {
-    entityName: String,
-    categoryName: String,
+    entityName: {
+      type: String,
+      default: 'Historical_Commission',
+    },
+    categoryName: {
+      type: String,
+      default: 'Meeting_Minutes', //TODO make default obj
+    },
   },
   data: function() {
     return {
@@ -693,6 +702,10 @@ export default {
     position: relative;
   }
 
+  .open.accordion-title::before {
+    content: '-';
+  }
+
   .acc-content {
     background-color:#f0f0f0 ;
     padding: 1rem;
@@ -721,10 +734,10 @@ export default {
 
         .clear-button-wrap {
             height: 50%;
+            float: right;
             
 
             button {
-              float: right;
               margin-left: 10px;
             }
 
@@ -785,4 +798,3 @@ export default {
   }
 }
 </style>
-
