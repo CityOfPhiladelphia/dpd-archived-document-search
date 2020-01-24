@@ -178,7 +178,7 @@ export default {
 <style lang="scss">
 
 .categories-wrap {
-  width: 85rem;
+  max-width: 85rem;
   margin: 0 auto;
   padding: 30px;
   padding-bottom:66px;

@@ -115,13 +115,14 @@ export default {
 
 <style lang="scss" >
 .dropdown-container {
-  width: 85rem;
+  max-width: 85rem;
   margin: 0 auto;
   padding: 30px;
 
   .top-container {
     display: flex;
     flex-direction: row;
+    
     .large-icon {
       padding: 50px;
       max-width: 40%;

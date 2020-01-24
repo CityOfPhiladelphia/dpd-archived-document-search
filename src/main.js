@@ -32,7 +32,15 @@ const router = new VueRouter({
   ],
 });
 
-new Vue({
-  render: h => h(App),
+// new Vue({
+//   render: h => h(App),
+//   router,
+// }).$mount('#vue-app');
+
+new Vue({ // eslint-disable-line no-new
+  el: '#vue-app',
   router,
-}).$mount('#vue-app');
+  render (h) {
+    return h(App, {});
+  },
+});

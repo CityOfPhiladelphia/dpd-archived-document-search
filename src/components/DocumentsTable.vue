@@ -676,6 +676,10 @@ export default {
 
 <style lang="scss" >
 
+.documents-container {
+  max-width: 85rem;
+}
+
 .search-wrapper {
   padding-bottom: 1rem;
 

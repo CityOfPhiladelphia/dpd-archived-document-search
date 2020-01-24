@@ -4,10 +4,7 @@
     top: 0;
     z-index: 100;
     max-height: 72px;
-
-   
 } 
-
 
 #application .site-header .logo img {
     max-width: 250px;
@@ -25,7 +22,6 @@
         position: relative;
         top: 0px;
         z-index: 100;
-    
     }
     
     .site-header {
