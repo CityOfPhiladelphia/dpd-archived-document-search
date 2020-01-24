@@ -1,0 +1,25 @@
+name: Deploy to production
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build files
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with: 
+            node-version: '10.x'
+      - uses: actions/checkout@master
+      - name: Build project files
+        run: |
+          npm install
+          npm run build
+      - name: Deploy to s3
+        env: 
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: 
+          aws s3 cp dist s3://archived-documents-vue-apps/dpd-archived-documents --recursive # change it
