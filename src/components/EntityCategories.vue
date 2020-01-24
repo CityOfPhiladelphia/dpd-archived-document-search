@@ -86,11 +86,10 @@ import Vue from "vue";
 import axios from "axios";
 import VueFuse from "vue-fuse";
 
-
 Vue.use(VueFuse);
 
-
-const endpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/document-categories/";
+const endpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/document-categories/";
+const gkKey = "?gatekeeperKey=" + "81fb983218b1c837147c3c5334339e01";
 
 export default {
   name: "EntityCategories",
@@ -112,7 +111,10 @@ export default {
   },
 
   props: {
-    entityName : String,
+    entityName : {
+      type: String,
+      default: "Historical_Commission",
+    },
   },
   data: function() {
     return {
@@ -141,7 +143,7 @@ export default {
   methods: {
     getEntities: function() {
       axios
-        .get(endpoint + this.$route.params.entityName)
+        .get(endpoint + this.$route.params.entityName + gkKey)
         .then(response => {
           this.categoriesList = response.data;
           

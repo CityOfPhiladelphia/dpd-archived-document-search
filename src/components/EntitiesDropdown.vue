@@ -54,8 +54,8 @@ import VuePaginate from "vue-paginate";
 Vue.use(VueFuse);
 Vue.use(VuePaginate);
 
-const endpoint =
-  "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/entities";
+const endpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/entities";
+const gkKey = "?gatekeeperKey=" + "81fb983218b1c837147c3c5334339e01";
 
 export default {
   name: "EntitiesDropdown",
@@ -88,7 +88,7 @@ export default {
   methods: {
     getEntities: function() {
       axios
-        .get(endpoint)
+        .get(endpoint + gkKey)
         .then(response => {
           this.entitiesList = response.data;
         })

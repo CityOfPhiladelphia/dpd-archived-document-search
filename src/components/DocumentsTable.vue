@@ -263,11 +263,12 @@ Vue.use(VueFuse);
 Vue.use(VuePaginate);
 Vue.use(moment);
 
+const endpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/filtered-document-list/";
+const docEndpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/get-document/";
+const catEndpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/document-categories/";
+const fullListEndpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/document-list/";
 
-const endpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/filtered-document-list/";
-const docEndpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/get-document/";
-const catEndpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/document-categories/";
-const fullListEndpoint = "https://dpd72vpwebapp01.city.phila.local:6453/api/v1/document-request/document-list/";
+const gkKey = "?gatekeeperKey=" + "81fb983218b1c837147c3c5334339e01";
 
 const fullBodyFilter = {
   "id": 7,
@@ -440,11 +441,11 @@ export default {
     },
 
     requestFile: function(fileID, fileName) {
-      console.log(docEndpoint + this.$route.params.entityName + "/" + this.endpointCategoryName + '/' + fileID);
+      console.log(docEndpoint + this.$route.params.entityName + "/" + this.endpointCategoryName + '/' + fileID + gkKey);
       this.downloading = true;
       this.fileName = fileName;
       axios
-        .get(docEndpoint + this.$route.params.entityName + "/" + this.endpointCategoryName + '/' + fileID , {
+        .get(docEndpoint + this.$route.params.entityName + "/" + this.endpointCategoryName + '/' + fileID + gkKey, {
           headers: {
             'Accept': 'application/pdf',
           }, responseType : "blob",
@@ -467,7 +468,7 @@ export default {
 
     requestDocumentsList: function(postObj) {
       axios
-        .post(endpoint, postObj)
+        .post(endpoint + gkKey, postObj)
         .then(response => {
           if (response.data.entries) {
             this.fullTextDocs = response.data.entries;
@@ -510,7 +511,7 @@ export default {
     },
     requestFullDocumentsList: function() {
       axios
-        .get(fullListEndpoint + this.$route.params.entityName + "/" + this.endpointCategoryName)
+        .get(fullListEndpoint + this.$route.params.entityName + "/" + this.endpointCategoryName + gkKey) 
         .then(response => {
           this.documentsList = response.data.entries;
           
@@ -545,9 +546,9 @@ export default {
 
     requestCategoryObject: function() {
 
-      console.log(catEndpoint + this.$route.params.entityName);
+      // console.log(catEndpoint + this.$route.params.entityName);
 
-      axios.get(catEndpoint + this.$route.params.entityName)
+      axios.get(catEndpoint + this.$route.params.entityName + gkKey)
         .then(response =>{
           this.categoryList = response.data;
         })
