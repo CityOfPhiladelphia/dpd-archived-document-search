@@ -796,6 +796,10 @@ export default {
     display: flex;
     justify-content: space-between;
     padding-top: 20px;
+
+    .paginate-links {
+      user-select: none;
+    }
   }
 }
 </style>
