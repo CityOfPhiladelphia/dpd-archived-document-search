@@ -1,4 +1,4 @@
 module.exports = {
   filenameHashing: false,
-  publicPath: "/dpd-archived-documents/"
+  publicPath: "/dpd-archived-documents/",
 };

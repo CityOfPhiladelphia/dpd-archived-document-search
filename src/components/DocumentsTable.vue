@@ -133,6 +133,8 @@
                   Clear all filters
                 </button>
                 <button
+                  class="button filter-button"
+                  :disabled="applyDisabled"
                   @click="filter()"
                 >
                   Apply Search
@@ -406,6 +408,13 @@ export default {
       return "";
     },
 
+    applyDisabled: function() {
+      if (this.start || this.end || this.selectedEntity || this.advancedSearch) {
+        return false;
+      }   
+      return true;  
+    },
+
   },
 
   watch: {
@@ -467,6 +476,7 @@ export default {
     },
 
     requestDocumentsList: function(postObj) {
+      this.loading = true;
       axios
         .post(endpoint + gkKey, postObj)
         .then(response => {
@@ -488,10 +498,13 @@ export default {
         })
         .catch(e => {
           console.log(e);
+          this.loading = false;
+          this.emptyResponse = true;
          
         })
         .finally(() => {
           this.filterOnFullText();
+          this.loading = false;
         });
     },
 
@@ -627,6 +640,7 @@ export default {
       this.search = '';
       this.end = '';
       this.advancedSearch = '';
+      this.emptyResponse = false;
 
       await this.filter();
     }, 
@@ -699,7 +713,7 @@ export default {
   .accordion-title {
     cursor: pointer;
     text-transform: uppercase;
-    color: #444;
+    // color: #444;
     font-size: 17px;
     font-weight: 700;
     padding: 1.15rem 1rem;
@@ -749,14 +763,20 @@ export default {
             .clear-button {
               background-color: transparent;
               text-decoration: underline;
-              color: black;
+              color: #0f4d90;
               //color: white;
               &:hover {
                 background-color: transparent;
-                color: grey;
               }
             }
           
+        }
+
+        .filter-button {
+          &:disabled {
+            background-color: #BABABA;
+            color: #9B9B9B;
+          }
         }
         .entity-dropdown {
           width: 100%;
@@ -783,9 +803,11 @@ export default {
 
     .table-sort.asc h5:after {
         content: '   \25B2';
+        font-size: 10px;
       }
     .table-sort.desc h5:after {
       content: '   \25BC';
+      font-size: 10px;
     }
 
     h5 {

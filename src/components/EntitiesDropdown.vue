@@ -141,4 +141,16 @@ export default {
     cursor: pointer;
   }
 }
+
+@media only screen and (max-width: 600px) {
+  .large-icon {
+    display: none;
+  }
+
+  #search-dropdown {
+    min-width: 100%;
+  }
+
+}
+
 </style>

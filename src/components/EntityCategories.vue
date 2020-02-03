@@ -33,49 +33,48 @@
     >
       Sorry, there was a problem. Please try again.
     </div>
-     
-     
     <div
       v-if="!loading && !emptyResponse && !failure"
       class="categories-list"
     >
       <div 
-       
         v-for="category in categoriesList"
         :key="category.name"
         class="category-container"
       >
-        <i 
-          v-if="category.displayName === 'Meeting Minutes'"
-          class="fas fa-hourglass-start fa-3x"
-        />
-        <i
-          v-if="category.displayName !== 'Meeting Minutes'"
-          class="fas fa-archive fa-3x"
-        />
-        <div class="category-info">
-          <div class="category-title">
-            <router-link 
-              :to="{name: 'documents', 
-                    params: { entityName : entityName , 
-                              categoryName : makeID(category.displayName) } }"
-            >
-              <h2>  {{ category.displayName | sentenceCase }} </h2>
-            </router-link>
-          </div>
-          <div
+        <router-link 
+          class="category-container"
+          :to="{name: 'documents', 
+                params: { entityName : entityName , 
+                          categoryName : makeID(category.displayName) } }"
+        >
+          <i 
             v-if="category.displayName === 'Meeting Minutes'"
-            class="category-description"
-          >
-            At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.
-          </div>
-          <div
+            class="fas fa-hourglass-start fa-3x"
+          />
+          <i
             v-if="category.displayName !== 'Meeting Minutes'"
-            class="category-description"
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus purus in. Libero id faucibus nisl tincidunt eget nullam non nisi. Nisl condimentum id venenatis a condimentum vitae sapien pellentesque habitant.
+            class="fas fa-archive fa-3x"
+          />
+          <div class="category-info">
+            <div class="category-title">
+              <h2>  {{ category.displayName | sentenceCase }} </h2>
+            </div>
+            <div
+              v-if="category.displayName === 'Meeting Minutes'"
+              class="category-description"
+            >
+              At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.
+            </div>
+         
+            <div
+              v-if="category.displayName !== 'Meeting Minutes'"
+              class="category-description"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus purus in. Libero id faucibus nisl tincidunt eget nullam non nisi. Nisl condimentum id venenatis a condimentum vitae sapien pellentesque habitant.
+            </div>
           </div>
-        </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -193,6 +192,10 @@ export default {
       padding: 20px;
       border-bottom: 1px solid lightgrey;
 
+      .category-description {
+        font-weight: 400;
+      }
+      
       &:nth-child(odd) {
          border-right: 1px solid lightgrey;
       }
