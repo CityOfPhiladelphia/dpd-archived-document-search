@@ -16,10 +16,10 @@
     <div class="page-title">
       <h1>  <i class="fas fa-hourglass-start blue-icon" /> {{ categoryName | removeUnderscore | sentenceCase }} </h1>
       <p>
-        At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations. 
+        At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.
       </p>
       <p>
-        Use the advanced search to filter your results by date or entity. You can also search the contents of the available documents.
+        Use the search bar to find documents by file name or meeting number. You can also use the advanced search to filter your results.
       </p>
     </div>
     <div class="search-wrapper">
@@ -70,9 +70,10 @@
               <div class="search">
                 <input
                   v-model="advancedSearch"
+                  aria-label="Search the content inside of the documents"
                   type="text"
                   class="search-field"
-                  placeholder=" Enter a keyword or phrase (ex. “City Hall”)"
+                  placeholder="Enter a keyword or phrase (ex. “City Hall”)"
                 >
                 <input
                   ref="archive-search-bar"
@@ -218,10 +219,15 @@
           <td v-if="minutes.indexValues">
             {{ minutes.indexValues["documentDate"] | dateDisplay }}
           </td>
-          <td v-if="minutes.indexValues">
+          <td
+            v-if="minutes.indexValues"
+            align="right"
+          >
             {{ minutes.indexValues["meetingNumber"] }}
           </td>
-          <td>{{ minutes.pageCount }}</td>
+          <td align="right">
+            {{ minutes.pageCount }}
+          </td>
           <td>
             <a
               class="download-link"
@@ -721,8 +727,13 @@ export default {
     position: relative;
   }
 
+  .accordion-title::before {
+    font-size: 30px;
+    top: unset;
+  }
   .open.accordion-title::before {
     content: '-';
+    font-size: 30px;
   }
 
   .acc-content {

@@ -11,8 +11,7 @@
     <div class="categories-title">
       <h1> {{ entityName | removeUnderscore }} documents</h1>
       <p>
-        The <a href="https://www.phila.gov/departments/philadelphia-historical-commission/">Philadelphia Historical Commission </a>identifies and protects the City’s historic resources. The Mayor appoints the commissioners, who are supported by three advisory committees.
-        As part of their work, the commission collects information about historic structures and produces documentation of their meetings. See the commission's public meetings page for the <a href="https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/">latest agendas, nominations, and more</a>.
+        The <a href="https://www.phila.gov/departments/philadelphia-historical-commission/">Philadelphia Historical Commission</a> identifies and protects the City’s historic resources. As part of their work, the commission collects information about historic structures and produces documentation of their meetings. For the latest agendas and nominations, see the commission's <a href="https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/">public meetings</a> page.
       </p>
     </div>
     <div
