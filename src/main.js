@@ -1,3 +1,6 @@
+import BrowserSupport from  "./browser-support.js";
+BrowserSupport.isIE();
+
 import Vue from 'vue';
 import App from './App.vue';
 import VueRouter from 'vue-router';
@@ -31,11 +34,6 @@ const router = new VueRouter({
    
   ],
 });
-
-// new Vue({
-//   render: h => h(App),
-//   router,
-// }).$mount('#vue-app');
 
 new Vue({ // eslint-disable-line no-new
   el: '#vue-app',
