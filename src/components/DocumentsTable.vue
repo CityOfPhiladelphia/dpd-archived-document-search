@@ -239,12 +239,14 @@
         </tr>
       </paginate>
     </table>
-    <div class="table-pagination">
+    <div 
+      v-if="filteredDocs.length && !emptyResponse"
+      class="table-pagination"
+    >
       <div class="documents-number">
         Showing <b> {{ filteredDocs.length }} </b> documents.
       </div>
       <paginate-links
-        v-if="filteredDocs.length > 0"
         class="app-pages"
         for="filteredDocs"
         :async="true"
@@ -753,7 +755,7 @@ export default {
           height: 50%;
           // padding: 10px 0px;
           display: flex;
-          justify-content: space-between;
+          justify-content: space-evenly;
 
          
           input[type='date'] {
