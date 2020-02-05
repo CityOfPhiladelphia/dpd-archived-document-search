@@ -10,3 +10,7 @@ npm run serve
 # Build for prod
 
 npm run build
+
+## License
+
+[MIT](LICENSE)
