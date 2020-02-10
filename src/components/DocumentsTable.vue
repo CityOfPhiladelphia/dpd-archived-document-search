@@ -110,21 +110,23 @@
               </div>
             </div>
             <div class="date-search filter-category">
-              Show results from
+              <span id="show-results-text"> Show results from</span>
               <div class="date-filter">
-                <input
-                  v-model="start"
-                  type="date"
-                  min="1956-01-01"
-                  max="2019-12-31"
-                >
-                <p> to </p>
-                <input
-                  v-model="end"
-                  type="date"
-                  min="1956-01-01"
-                  max="2019-12-31"
-                >
+                <div class="date-container">
+                  <input
+                    v-model="start"
+                    type="date"
+                  >
+                </div>
+                <div id="to-text">
+                  <span> to </span>
+                </div>
+                <div class="date-container">
+                  <input
+                    v-model="end"
+                    type="date"
+                  >
+                </div>
               </div>
               <div class="clear-button-wrap">
                 <button
@@ -749,25 +751,34 @@ export default {
       .filter-category{
         width: 50%;
         padding: 10px;
-      
+
+        #show-results-text {
+          padding-left: 12%;
+        }
         
         .date-filter {
           height: 50%;
-          // padding: 10px 0px;
           display: flex;
-          justify-content: space-evenly;
+          justify-content: center;
 
-         
-          input[type='date'] {
-            background-color: white;
-           width: 33%;
+          #to-text {
+            width: 10%;
+            text-align: center;
+            padding-top: 10px;
+          }
+        
+          .date-container {
+            width: 33%;
+            input[type='date'] {
+              background-color: white;
+              
+            }
           }
         }
 
         .clear-button-wrap {
             height: 50%;
             float: right;
-            
 
             button {
               margin-left: 10px;
@@ -777,7 +788,7 @@ export default {
               background-color: transparent;
               text-decoration: underline;
               color: #0f4d90;
-              //color: white;
+
               &:hover {
                 background-color: transparent;
               }
