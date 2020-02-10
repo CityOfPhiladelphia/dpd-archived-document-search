@@ -34,8 +34,8 @@ export default {
 @media (max-width:760px) {
 
    #application .site-header .logo img {
-    //  max-height: 30px;
-    display: none;
+      // width: 100px;
+      height: 35px;
     }
 
     .app-nav {
