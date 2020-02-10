@@ -13,4 +13,39 @@ export default {
 
 <style lang="scss" >
 
+.site-header {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 100;
+    max-height: 72px;
+} 
+
+#application .site-header .logo img {
+    max-width: 250px;
+}
+.app-nav {
+    position: sticky;
+    top: 72px;
+    position: -webkit-sticky;
+    z-index: 100;
+}
+
+@media (max-width:760px) {
+
+    .app-nav {
+        position: relative;
+        top: 0px;
+        z-index: 100;
+    }
+    
+    .site-header {
+        position: relative;
+        top: 0px;
+        z-index: 100;
+        max-height: 300px;
+    }
+    
+}
+
 </style>
