@@ -30,15 +30,18 @@
           class="search-field"
           type="text"
           placeholder="Search by document name or meeting number"
+          aria-label="Search by document name or meeting number"
         ><input
           ref="archive-search-bar"
           type="submit"
           class="search-submit"
           value="Search"
+          aria-label="Search by document name or meeting number"
         >
         <button
           v-if="search.length > 0"
           class="clear-search-btn"
+          aria-label="Clear search bar"
           @click="clearSearchBar"
         >
           <i class="fas fa-times " />
@@ -52,6 +55,7 @@
           class="accordion-title bg-ghost-gray"
           tabindex="0"
           role="region"
+          aria-label="Show advanced filters"
           :aria-expanded="showContent"
           @click="toggle"
           @keyup.enter="toggle"
@@ -93,6 +97,7 @@
                     v-model="selectedEntity"
                     tabindex="0"
                     placeholder="Select an Entity"
+                    aria-label="Select an Entity"
                   >
                     <option
                       :key="''"
@@ -115,7 +120,10 @@
                 <div class="date-container">
                   <input
                     v-model="start"
+                    aria-label="Select a start date"
                     type="date"
+                    min="1956-1-1"
+                    max="2020-1-1"
                   >
                 </div>
                 <div id="to-text">
@@ -124,19 +132,24 @@
                 <div class="date-container">
                   <input
                     v-model="end"
+                    aria-label="Select an end date"
                     type="date"
+                    min="1956-1-1"
+                    max="2020-1-1"
                   >
                 </div>
               </div>
               <div class="clear-button-wrap">
                 <button
                   class="clear-button"
+                  aria-label="Clear all filters"
                   @click="clearAllFilters"
                 >
                   Clear all filters
                 </button>
                 <button
                   class="button filter-button"
+                  aria-label="Apply advanced filters"
                   :disabled="applyDisabled"
                   @click="filter()"
                 >
@@ -181,22 +194,36 @@
       class="table-container"
     >
       <thead>
-        <th><h5>Document name</h5></th>
-        <th>
+        <th class="th-doc-name">
+          <h5>Document name</h5>
+        </th>
+        <th 
+          class="th-doc-entity"
+        >
           <h5>Entity</h5>
         </th>
         <th
-          class="table-sort date"
+          class="table-sort date th-doc-date"
           :class="sortDate"
           @click="sort('documentDate')"
         >
           <h5>Document date</h5>
         </th>
-        <th>
+        <th
+          class="th-meeting-number"
+        >
           <h5>Meeting number</h5>
         </th>
-        <th><h5>Page count</h5></th>
-        <th><h5>Format</h5></th>
+        <th
+          class="th-page-count"
+        >
+          <h5>Page count</h5>
+        </th>
+        <th
+          class="th-format"
+        >
+          <h5>Format</h5>
+        </th>
       </thead>
 
       <paginate
@@ -807,7 +834,7 @@ export default {
         }
       }
     }
-  }
+  } 
 }
 
 .documents-container {
@@ -824,6 +851,29 @@ export default {
 
   table {
     margin: 0 auto;
+
+    .th-doc-name {
+      width: 25%;
+    }
+
+    .th-doc-entity {
+      width: 27%;
+    }
+    .th-doc-date {
+      width: 16%;
+    }
+
+    .th-meeting-number {
+      width: 14%;
+    }
+
+    .th-page-count {
+      width: 10%;
+    }
+
+    .th-format {
+      width: 5%;
+    }
 
     .table-sort.asc h5:after {
         content: '   \25B2';
