@@ -470,7 +470,20 @@ export default {
   },
 
   methods: {
-
+    trackDownloads: function(fileName) { 
+      this.$gtag.event('DPD - Document archive', {
+        'event_category': 'File download',
+        'event_label': fileName,
+        'value': 1,
+      });
+    },
+    trackFullTextSearch: function(fileName) { 
+      this.$gtag.event('DPD - Document archive', {
+        'event_category': 'Full text search',
+        'event_label': fileName,
+        'value': 1,
+      });
+    },
     filterBySearch: function() {
       if (this.search) {
         let tempDocs = [];
@@ -509,10 +522,12 @@ export default {
         })
         .finally(() => {
           this.downloading = false;
+          this.trackDownloads(fileName);
         });
     },
 
     requestDocumentsList: function(postObj) {
+      console.log(`postObj`, postObj);
       this.loading = true;
       axios
         .post(endpoint + gkKey, postObj)
@@ -537,10 +552,11 @@ export default {
           console.log(e);
           this.loading = false;
           this.emptyResponse = true;
-         
+        
         })
         .finally(() => {
           this.filterOnFullText();
+          this.trackFullTextSearch(postObj.attributes[0].filterValue1);
           this.loading = false;
         });
     },
