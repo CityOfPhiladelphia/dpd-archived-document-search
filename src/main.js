@@ -5,6 +5,8 @@ BrowserSupport.isIE();
 import Vue from 'vue';
 import App from './App.vue';
 import VueRouter from 'vue-router';
+import VueGtag from "vue-gtag";
+
 
 import DocumentsTable from "./components/DocumentsTable";
 import EntitiesDropdown from "./components/EntitiesDropdown";
@@ -12,6 +14,13 @@ import EntityCategories from "./components/EntityCategories";
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
+
+Vue.use(VueGtag, {
+  config: { id: "UA-860026-1" },
+  appName: 'DPD Document Archive',
+  pageTrackerScreenviewEnabled: true,
+}, router) ;
+
 
 const router = new VueRouter({
   routes: [
@@ -32,7 +41,7 @@ const router = new VueRouter({
       component: DocumentsTable,
       props: true,
     },
-   
+  
   ],
 });
 
