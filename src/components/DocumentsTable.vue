@@ -118,25 +118,23 @@
               <span id="show-results-text"> Show results from</span>
               <div class="date-filter">
                 <div class="date-container">
-                  <input
+                  <datepicker
                     v-model="start"
-                    aria-label="Select a start date"
-                    type="date"
-                    min="1956-1-1"
-                    max="2020-1-1"
-                  >
+                    name="start"
+                    placeholder="Start date"
+                    format="MMM. dd, yyyy"
+                  />
                 </div>
                 <div id="to-text">
                   <span> to </span>
                 </div>
                 <div class="date-container">
-                  <input
+                  <datepicker
                     v-model="end"
-                    aria-label="Select an end date"
-                    type="date"
-                    min="1956-1-1"
-                    max="2020-1-1"
-                  >
+                    name="end"
+                    placeholder="End date"
+                    format="MMM. dd, yyyy"
+                  />
                 </div>
               </div>
               <div class="clear-button-wrap">
@@ -339,7 +337,7 @@ const fullBodyFilter = {
 export default {
   name: "DocumentsTable",
   components: {
-    // Datepicker,
+    Datepicker,
   },
   filters: {
     dateDisplay: function(val) {
@@ -853,6 +851,14 @@ export default {
       }
     }
   } 
+}
+
+.vdp-datepicker [type='text'] {
+  height: 2.4rem;
+}
+.vdp-datepicker input:read-only{
+  background: white;
+  cursor: pointer;
 }
 
 .documents-container {
