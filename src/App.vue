@@ -1,56 +1,27 @@
 <template>
-  <router-view />
+  <div>
+    <AppHeader />
+    <router-view />
+    <AppFooter />
+  </div>
 </template>
 
 <script>
 import Vue from "vue";
 import axios from "axios";
+import AppHeader from './components/AppHeader.vue';
+import AppFooter from './components/AppFooter.vue';
+
 
 export default {
   name: "ArchivedDocuments", 
+  components: {
+    AppHeader,
+    AppFooter,
+  },
 };
 </script>
 
 <style lang="scss" >
-
-.site-header {
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0;
-    z-index: 100;
-    max-height: 72px;
-} 
-
-#application .site-header .logo img {
-    max-width: 250px;
-}
-.app-nav {
-    position: sticky;
-    top: 72px;
-    position: -webkit-sticky;
-    z-index: 100;
-}
-
-@media (max-width:760px) {
-
-  //  #application .site-header .logo img {
-  //     // width: 100px;
-  //     height: 35px;
-  //   }
-
-    .app-nav {
-        position: relative;
-        top: 0px;
-        z-index: 100;
-    }
-    
-    .site-header {
-        position: relative;
-        top: 0px;
-        z-index: 100;
-        max-height: 300px;
-    }
-    
-}
 
 </style>

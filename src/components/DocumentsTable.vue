@@ -13,7 +13,7 @@
       </router-link> /
       {{ $route.params.categoryName | removeUnderscore | sentenceCase }}
     </div>
-    <div class="page-title">
+    <div>
       <h1>  <i class="fas fa-hourglass-start blue-icon" /> {{ categoryName | removeUnderscore | sentenceCase }} </h1>
       <p>
         At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.
@@ -297,6 +297,7 @@ import axios from "axios";
 import VueFuse from "vue-fuse";
 import VuePaginate from "vue-paginate";
 import moment from "moment";
+import Datepicker from "vuejs-datepicker";
 
 Vue.use(VueFuse);
 Vue.use(VuePaginate);
@@ -338,6 +339,7 @@ const fullBodyFilter = {
 export default {
   name: "DocumentsTable",
   components: {
+    // Datepicker,
   },
   filters: {
     dateDisplay: function(val) {
