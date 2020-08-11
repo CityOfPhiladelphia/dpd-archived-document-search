@@ -856,7 +856,7 @@ export default {
 .vdp-datepicker [type='text'] {
   height: 2.4rem;
 }
-.vdp-datepicker input:read-only{
+.vdp-datepicker input{
   background: white;
   cursor: pointer;
 }
