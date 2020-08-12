@@ -16,7 +16,8 @@
     <div>
       <h1>  <i class="fas fa-hourglass-start blue-icon" /> {{ categoryName | removeUnderscore | sentenceCase }} </h1>
       <p>
-        At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.
+        At their 
+        <a href="https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/">public meetings</a>, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.
       </p>
       <p>
         Use the search bar to find documents by file name or meeting number. You can also use the advanced search to filter your results.
