@@ -79,12 +79,12 @@
                   class="search-field"
                   placeholder="Enter a keyword or phrase (ex. “City Hall”)"
                 >
-                <input
+                <!-- <input
                   ref="archive-search-bar"
                   type="submit"
                   class="search-submit"
                   value="Search"
-                >
+                > -->
               </div>
               <div class="entity-dropdown ">
                 Filter by entity
