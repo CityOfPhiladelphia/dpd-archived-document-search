@@ -86,7 +86,7 @@ import VueFuse from "vue-fuse";
 
 Vue.use(VueFuse);
 
-const endpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/document-categories/";
+const endpoint = "https://api-test.phila.gov/dpd-docs-test/api/v1/document-request/document-categories/";
 const gkKey = "?gatekeeperKey=" + "81fb983218b1c837147c3c5334339e01";
 
 export default {
