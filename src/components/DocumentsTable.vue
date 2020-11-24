@@ -302,10 +302,10 @@ Vue.use(VueFuse);
 Vue.use(VuePaginate);
 Vue.use(moment);
 
-const endpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/filtered-document-list/";
-const docEndpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/get-document/";
-const catEndpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/document-categories/";
-const fullListEndpoint = "https://api.phila.gov/dpd-docs/api/v1/document-request/document-list/";
+const endpoint = "https://api-test.phila.gov/dpd-docs-test/api/v1/document-request/filtered-document-list/";
+const docEndpoint = "https://api-test.phila.gov/dpd-docs-test/api/v1/document-request/get-document/";
+const catEndpoint = "https://api-test.phila.gov/dpd-docs-test/api/v1/document-request/document-categories/";
+const fullListEndpoint = "https://api-test.phila.gov/dpd-docs-test/api/v1/document-request/document-list/";
 
 const gkKey = "?gatekeeperKey=" + "81fb983218b1c837147c3c5334339e01";
 
