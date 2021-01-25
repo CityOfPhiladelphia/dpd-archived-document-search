@@ -90,7 +90,7 @@ export default {
       axios
         .get(endpoint + gkKey)
         .then(response => {
-          this.entitiesList = response.data;
+          this.entitiesList = [response.data[0]];
         })
         .catch(e => {
           console.log(e);
