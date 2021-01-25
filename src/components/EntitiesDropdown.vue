@@ -67,7 +67,7 @@ export default {
   },
   data: function() {
     return {
-      entitiesList: [],
+      entitiesList: ["Historical_Comission"],
       // entityNames: [],
       selectedEntity: "",
       showConfirm: false,
@@ -90,7 +90,7 @@ export default {
       axios
         .get(endpoint + gkKey)
         .then(response => {
-          this.entitiesList = response.data;
+          this.entitiesList = [response.data[0]];
         })
         .catch(e => {
           console.log(e);
