@@ -67,7 +67,7 @@ export default {
   },
   data: function() {
     return {
-      entitiesList: ["Historical_Comission"],
+      entitiesList: [],
       // entityNames: [],
       selectedEntity: "",
       showConfirm: false,
