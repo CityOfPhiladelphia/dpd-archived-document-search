@@ -28,7 +28,7 @@
           </select>
         </label>
         <router-link 
-          :to="{name: 'categories', params : { entityName : selectedEntity }}"
+          :to="{name: 'categories', params : { selectedProp : selectedProp }}"
         >
           <button 
             v-if="showConfirm"
@@ -54,6 +54,36 @@ import VuePaginate from "vue-paginate";
 Vue.use(VueFuse);
 Vue.use(VuePaginate);
 
+const HCProps = {
+  entityName: "Historical_Commission",
+  entityDescription: "<p> The <a href='https://www.phila.gov/departments/philadelphia-historical-commission/'>Philadelphia Historical Commission</a> identifies and protects the City’s historic resources. As part of their work, the commission collects information about historic structures and produces documentation of their meetings. For the latest agendas and nominations, see the commission's <a href='https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/'>public meetings</a> page. </p>",
+  entityPrefix: "HISTORICAL_COMM",
+  categories: [
+    { 
+      categoryName: "Meeting minutes",
+      categoryDescription: "At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.",
+      categoryPageDescription: "<p> At their <a href='https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/'>public meetings</a>, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.</p>",
+      categoryIcon: "fa-hourglass-start",
+      categoryURL: 'HISTORICAL_COMM-MEETING_MINUTES'
+    },
+  ],
+};
+
+const DHCDProps = {
+  entityName: "DHCD",
+  entityDescription: "the description on the DHCD  category selection page",
+  entityPrefix: "DHCD",
+  categories: [
+    { 
+      categoryName: "Reports",
+      categoryDescription: "DHCD description for the button",
+      categoryPageDescription: "DHCD description for the reports table page",
+      categoryIcon: "fa-file",
+      categoryURL: "DHCD_REPORTS"
+    },
+  ],
+};
+
 const endpoint = "https://api-test.phila.gov/dpd-docs-test/api/v1/document-request/entities";
 const gkKey = "?gatekeeperKey=" + "81fb983218b1c837147c3c5334339e01";
 
@@ -68,7 +98,7 @@ export default {
   data: function() {
     return {
       entitiesList: [],
-      // entityNames: [],
+      selectedProp: {},
       selectedEntity: "",
       showConfirm: false,
     };
@@ -78,6 +108,12 @@ export default {
   watch: {
     selectedEntity (val) {
       this.showConfirm = (val && val != "") ? true : false;
+      if (val == "Historical_Commission") {
+        this.selectedProp = HCProps;
+      } else if 
+        (val == "DHCD") {
+          this.selectedProp = DHCDProps;
+      }
     },
   },
 
@@ -90,7 +126,7 @@ export default {
       axios
         .get(endpoint + gkKey)
         .then(response => {
-          this.entitiesList = [response.data[0]];
+          this.entitiesList = response.data;
         })
         .catch(e => {
           console.log(e);

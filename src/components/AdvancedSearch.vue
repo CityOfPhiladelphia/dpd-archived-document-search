@@ -432,8 +432,8 @@ export default {
   },
   computed: {
     endpointCategoryName: function() {
-      if (this.$route.params.categoryName) {
-        return  "HISTORICAL_COMM-" + this.$route.params.categoryName.toUpperCase();
+      if (this.$route.params.categoryURL) {
+        return this.$route.params.categoryURL
       } 
       return this.category;
       

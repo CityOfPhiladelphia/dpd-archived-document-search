@@ -6,13 +6,13 @@
       >
         <i class="fas fa-home" />
       </router-link>
-      / {{ $route.params.entityName | removeUnderscore }}
+      / {{ $route.params.selectedProp.entityName | removeUnderscore }}
     </div>
     <div class="categories-title">
-      <h1> {{ entityName | removeUnderscore }} documents</h1>
-      <p>
-        The <a href="https://www.phila.gov/departments/philadelphia-historical-commission/">Philadelphia Historical Commission</a> identifies and protects the City’s historic resources. As part of their work, the commission collects information about historic structures and produces documentation of their meetings. For the latest agendas and nominations, see the commission's <a href="https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/">public meetings</a> page.
-      </p>
+      <h1> {{ selectedProp.entityName | removeUnderscore }} documents</h1>
+      <div 
+      v-html=selectedProp.entityDescription
+      />
     </div>
     <div
       v-show="loading"
@@ -37,41 +37,30 @@
       class="categories-list"
     >
       <div 
-        v-for="category in categoriesList"
-        :key="category.name"
+        v-for="category in selectedProp.categories"
+        :key="category.categoryName"
         class="category-container"
       >
         <router-link 
           class="category-container"
           :to="{name: 'documents', 
-                params: { entityName : entityName , 
-                          categoryName : makeID(category.displayName) } }"
+                params: { entityName : selectedProp.entityName , 
+                          categoryName : makeID(category.categoryName),
+                          categoryPageDescription: category.categoryPageDescription,
+                          categoryURL: category.categoryURL } }"
         >
-          <i 
-            v-if="category.displayName === 'Meeting Minutes'"
-            class="fas fa-hourglass-start fa-3x"
-          />
           <i
-            v-if="category.displayName !== 'Meeting Minutes'"
-            class="fas fa-archive fa-3x"
+            class="fas fa-3x"
+            :class=category.categoryIcon
           />
           <div class="category-info">
             <div class="category-title">
-              <h2>  {{ category.displayName | sentenceCase }} </h2>
+              <h2>  {{ category.categoryName | sentenceCase }} </h2>
             </div>
             <div
-              v-if="category.displayName === 'Meeting Minutes'"
               class="category-description"
-            >
-              At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.
-            </div>
-         
-            <div
-              v-if="category.displayName !== 'Meeting Minutes'"
-              class="category-description"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus purus in. Libero id faucibus nisl tincidunt eget nullam non nisi. Nisl condimentum id venenatis a condimentum vitae sapien pellentesque habitant.
-            </div>
+              v-html=category.categoryDescription
+            />
           </div>
         </router-link>
       </div>
@@ -109,18 +98,20 @@ export default {
   },
 
   props: {
-    entityName : {
-      type: String,
-      default: "Historical_Commission",
-    },
+    selectedProp: {
+      type: Object,
+      default: function () {
+        return { }
+      }
+    }
   },
   data: function() {
     return {
       categoriesList: [],
       // categoryNames: [],
-      selectedCategoryObject: {},
-      loading: true,
-      emptyResponse: true,
+      // selectedCategoryObject: {},
+      loading: false,
+      emptyResponse: false,
       failure: false,
     };
   },
@@ -134,14 +125,14 @@ export default {
   },
 
   mounted: function() {
-    this.getEntities();
+    // this.getEntities();
     // console.log(this.$route);
   },
 
   methods: {
     getEntities: function() {
       axios
-        .get(endpoint + this.$route.params.entityName + gkKey)
+        .get(endpoint + this.$route.params.selectedProp.entityName + gkKey)
         .then(response => {
           this.categoriesList = response.data;
           
