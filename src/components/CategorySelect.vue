@@ -1,1 +1,0 @@
-// select category button - receives an icon, a desription, a name. clicks through to table

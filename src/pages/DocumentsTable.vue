@@ -16,7 +16,7 @@
     <div>
       <h1>  <i class="fas fa-hourglass-start blue-icon" /> {{ categoryName | removeUnderscore | sentenceCase }} </h1>
       <div 
-      v-html=$route.params.categoryPageDescription 
+        v-html="$route.params.categoryPageDescription" 
       />
       <p>
         Use the search bar to find documents by file name or meeting number. You can also use the advanced search to filter your results.
@@ -308,32 +308,6 @@ const fullListEndpoint = "https://api-test.phila.gov/dpd-docs-test/api/v1/docume
 
 const gkKey = "?gatekeeperKey=" + "81fb983218b1c837147c3c5334339e01";
 
-const fullBodyFilter = {
-  "id": 7,
-  "name": "HISTORICAL_COMM-MEETING_MINUTES",
-  "displayName": "Meeting Minutes",
-  "attributes": [
-    {
-      "fieldNumber": 8,
-      "name": "FULL_TEXT",
-      "filterValue1": null,
-      "filterValue2": null,
-      "type": {
-        "name": "FULL_TEXT",
-        "filterTypes": [
-          {
-            "name": "FULL_TEXT",
-          },
-        ],
-      },
-      "selectedFilterType": {
-        "name": "FULL_TEXT",
-      },
-    },
-  ],
-  "entityId": 1,
-};
-
 export default {
   name: "DocumentsTable",
   components: {
@@ -394,7 +368,7 @@ export default {
     categoryDescription: {
       type: String,
       default: '',
-    }
+    },
   },
   data: function() {
     return {
@@ -436,7 +410,7 @@ export default {
   computed: {
     endpointCategoryName: function() {
       if (this.$route.params.categoryURL) {
-        return  this.$route.params.categoryURL 
+        return  this.$route.params.categoryURL; 
       } 
       return this.category;
       
@@ -632,7 +606,7 @@ export default {
 
     filter: function(){
       if (this.advancedSearch) {
-        let postObject = fullBodyFilter;
+        let postObject = this.$route.params.fullBodyFilter;
         postObject.attributes[0].filterValue1 = this.advancedSearch;
         console.log(postObject);
         this.requestDocumentsList(postObject);

@@ -11,7 +11,7 @@
     <div class="categories-title">
       <h1> {{ selectedProp.entityName | removeUnderscore }} documents</h1>
       <div 
-      v-html=selectedProp.entityDescription
+        v-html="selectedProp.entityDescription"
       />
     </div>
     <div
@@ -47,11 +47,12 @@
                 params: { entityName : selectedProp.entityName , 
                           categoryName : makeID(category.categoryName),
                           categoryPageDescription: category.categoryPageDescription,
-                          categoryURL: category.categoryURL } }"
+                          categoryURL: category.categoryURL,
+                          fullBodyFilter: category.fullBodyFilter } }"
         >
           <i
             class="fas fa-3x"
-            :class=category.categoryIcon
+            :class="category.categoryIcon"
           />
           <div class="category-info">
             <div class="category-title">
@@ -59,7 +60,7 @@
             </div>
             <div
               class="category-description"
-              v-html=category.categoryDescription
+              v-html="category.categoryDescription"
             />
           </div>
         </router-link>
@@ -101,9 +102,9 @@ export default {
     selectedProp: {
       type: Object,
       default: function () {
-        return { }
-      }
-    }
+        return { };
+      },
+    },
   },
   data: function() {
     return {
