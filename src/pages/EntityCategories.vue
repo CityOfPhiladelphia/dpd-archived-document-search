@@ -44,11 +44,7 @@
         <router-link 
           class="category-container"
           :to="{name: 'documents', 
-                params: { entityName : selectedProp.entityName , 
-                          categoryName : makeID(category.categoryName),
-                          categoryPageDescription: category.categoryPageDescription,
-                          categoryURL: category.categoryURL,
-                          fullBodyFilter: category.fullBodyFilter } }"
+                params: { selectedProp : selectedProp} }"
         >
           <i
             class="fas fa-3x"
@@ -105,12 +101,14 @@ export default {
         return { };
       },
     },
+    entityName: {
+      type: String,
+      default: "",
+    },
   },
   data: function() {
     return {
       categoriesList: [],
-      // categoryNames: [],
-      // selectedCategoryObject: {},
       loading: false,
       emptyResponse: false,
       failure: false,
@@ -127,7 +125,7 @@ export default {
 
   mounted: function() {
     // this.getEntities();
-    // console.log(this.$route);
+    console.log(this.$route);
   },
 
   methods: {

@@ -1,4 +1,4 @@
-import DocumentsTable from "./pages/DocumentsTable";
+import DocumentTable from "./pages/DocumentTable";
 import EntitiesDropdown from "./pages/EntitiesDropdown";
 import EntityCategories from "./pages/EntityCategories";
 import Vue from 'vue';
@@ -21,7 +21,7 @@ const router = new Router({
     {
       path: '/:entityName/:categoryName/',
       name: 'documents',
-      component: DocumentsTable,
+      component: DocumentTable,
       props: true,
     },
   

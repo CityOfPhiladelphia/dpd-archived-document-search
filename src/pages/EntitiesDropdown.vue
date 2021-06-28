@@ -55,6 +55,7 @@ Vue.use(VueFuse);
 Vue.use(VuePaginate);
 
 const HCProps = {
+  advancedSearch: true,
   entityName: "Historical_Commission",
   entityDescription: "<p> The <a href='https://www.phila.gov/departments/philadelphia-historical-commission/'>Philadelphia Historical Commission</a> identifies and protects the City’s historic resources. As part of their work, the commission collects information about historic structures and produces documentation of their meetings. For the latest agendas and nominations, see the commission's <a href='https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/'>public meetings</a> page. </p>",
   entityPrefix: "HISTORICAL_COMM",
@@ -95,8 +96,9 @@ const HCProps = {
 };
 
 const DHCDProps = {
+  advancedSearch: false,
   entityName: "DHCD",
-  entityDescription: "the description on the DHCD  category selection page",
+  entityDescription: "the description on the DHCD category selection page",
   entityPrefix: "DHCD",
   categories: [
     { 
