@@ -28,7 +28,7 @@
           </select>
         </label>
         <router-link 
-          :to="{name: 'categories', params : { selectedProp : selectedProp }}"
+          :to="{name: 'categories', params : { entityName: entityName}}"
         >
           <button 
             v-if="showConfirm"
@@ -54,46 +54,46 @@ import VuePaginate from "vue-paginate";
 Vue.use(VueFuse);
 Vue.use(VuePaginate);
 
-const HCProps = {
-  advancedSearch: true,
-  entityName: "Historical_Commission",
-  entityDescription: "<p> The <a href='https://www.phila.gov/departments/philadelphia-historical-commission/'>Philadelphia Historical Commission</a> identifies and protects the City’s historic resources. As part of their work, the commission collects information about historic structures and produces documentation of their meetings. For the latest agendas and nominations, see the commission's <a href='https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/'>public meetings</a> page. </p>",
-  entityPrefix: "HISTORICAL_COMM",
-  categories: [
-    { 
-      categoryName: "Meeting minutes",
-      categoryDescription: "At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.",
-      categoryPageDescription: "<p> At their <a href='https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/'>public meetings</a>, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.</p>",
-      categoryIcon: "fa-hourglass-start",
-      categoryURL: 'HISTORICAL_COMM-MEETING_MINUTES',
-      fullBodyFilter: {
-        "id": 7,
-        "name": "HISTORICAL_COMM-MEETING_MINUTES",
-        "displayName": "Meeting Minutes",
-        "attributes": [
-          {
-            "fieldNumber": 8,
-            "name": "FULL_TEXT",
-            "filterValue1": null,
-            "filterValue2": null,
-            "type": {
-              "name": "FULL_TEXT",
-              "filterTypes": [
-                {
-                  "name": "FULL_TEXT",
-                },
-              ],
-            },
-            "selectedFilterType": {
-              "name": "FULL_TEXT",
-            },
-          },
-        ],
-        "entityId": 1,
-      },
-    },
-  ],
-};
+// const HCProps = {
+//   advancedSearch: true,
+//   entityName: "Historical_Commission",
+//   entityDescription: "<p> The <a href='https://www.phila.gov/departments/philadelphia-historical-commission/'>Philadelphia Historical Commission</a> identifies and protects the City’s historic resources. As part of their work, the commission collects information about historic structures and produces documentation of their meetings. For the latest agendas and nominations, see the commission's <a href='https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/'>public meetings</a> page. </p>",
+//   entityPrefix: "HISTORICAL_COMM",
+//   categories: [
+//     { 
+//       categoryName: "Meeting minutes",
+//       categoryDescription: "At their public meetings, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.",
+//       categoryPageDescription: "<p> At their <a href='https://www.phila.gov/departments/philadelphia-historical-commission/public-meetings/'>public meetings</a>, the Philadelphia Historical Commission and its committees review building permit applications and matters relating to historic designation. The minutes outline the projects and nominations under review. They also summarize the discussion and report any decisions and recommendations.</p>",
+//       categoryIcon: "fa-hourglass-start",
+//       categoryURL: 'HISTORICAL_COMM-MEETING_MINUTES',
+//       fullBodyFilter: {
+//         "id": 7,
+//         "name": "HISTORICAL_COMM-MEETING_MINUTES",
+//         "displayName": "Meeting Minutes",
+//         "attributes": [
+//           {
+//             "fieldNumber": 8,
+//             "name": "FULL_TEXT",
+//             "filterValue1": null,
+//             "filterValue2": null,
+//             "type": {
+//               "name": "FULL_TEXT",
+//               "filterTypes": [
+//                 {
+//                   "name": "FULL_TEXT",
+//                 },
+//               ],
+//             },
+//             "selectedFilterType": {
+//               "name": "FULL_TEXT",
+//             },
+//           },
+//         ],
+//         "entityId": 1,
+//       },
+//     },
+//   ],
+// };
 
 const DHCDProps = {
   advancedSearch: false,
@@ -136,10 +136,10 @@ export default {
     selectedEntity (val) {
       this.showConfirm = (val && val != "") ? true : false;
       if (val == "Historical_Commission") {
-        this.selectedProp = HCProps;
+        this.entityName = "Historical_Commission";
       } else if 
       (val == "DHCD") {
-        this.selectedProp = DHCDProps;
+        this.entityName = "DHCD";
       }
     },
   },

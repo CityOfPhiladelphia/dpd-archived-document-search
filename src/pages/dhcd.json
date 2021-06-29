@@ -1,0 +1,15 @@
+{
+  "advancedSearch": false,
+  "entityName": "DHCD",
+  "entityDescription": "the description on the DHCD category selection page",
+  "entityPrefix": "DHCD",
+  "categories": [
+    { 
+      "categoryName": "Reports",
+      "categoryDescription": "DHCD description for the button",
+      "categoryPageDescription": "DHCD description for the reports table page",
+      "categoryIcon": "fa-file",
+      "categoryURL": "DHCD_REPORTS"
+    }
+  ]
+}

@@ -1,291 +1,6 @@
 <template>
   <div class="documents-container">
-    <div class="bread-crumbs">
-      <router-link 
-        to="/"
-      >
-        <i class="fas fa-home" />
-      </router-link> / 
-      <router-link 
-        :to="{name: 'categories', params : { entityName : $route.params.entityName }}"
-      >
-        {{ $route.params.entityName | removeUnderscore }}
-      </router-link> /
-      {{ $route.params.categoryName | removeUnderscore | sentenceCase }}
-    </div>
-    <div>
-      <h1>  <i class="fas fa-hourglass-start blue-icon" /> {{ categoryName | removeUnderscore | sentenceCase }} </h1>
-      <div 
-        v-html="$route.params.categoryPageDescription" 
-      />
-      <p>
-        Use the search bar to find documents by file name or meeting number. You can also use the advanced search to filter your results.
-      </p>
-    </div>
-    <div class="search-wrapper">
-      <div class="search">
-        <input
-          id="search-bar"
-          v-model="search"
-          class="search-field"
-          type="text"
-          placeholder="Search by document name or meeting number"
-          aria-label="Search by document name or meeting number"
-        ><input
-          ref="archive-search-bar"
-          type="submit"
-          class="search-submit"
-          value="Search"
-          aria-label="Search by document name or meeting number"
-        >
-        <button
-          v-if="search.length > 0"
-          class="clear-search-btn"
-          aria-label="Clear search bar"
-          @click="clearSearchBar"
-        >
-          <i class="fas fa-times " />
-        </button>
-      </div>
-      <!-- Advanced Search component -->
-      <div class="accordion-wrap">
-        <div
-          v-show="true"
-          :class="{open : showContent}"
-          class="accordion-title bg-ghost-gray"
-          tabindex="0"
-          role="region"
-          aria-label="Show advanced filters"
-          :aria-expanded="showContent"
-          @click="toggle"
-          @keyup.enter="toggle"
-        >
-          <slot name="title">
-            Advanced Search
-          </slot>
-        </div>
-        <div
-          v-show="showContent"
-          class="acc-content"
-        >
-          <div class="advanced-filters">
-            <div class="full-search filter-category">
-              Search contents of documents
-              <div class="search">
-                <input
-                  v-model="advancedSearch"
-                  aria-label="Search the content inside of the documents"
-                  type="text"
-                  class="search-field"
-                  placeholder="Enter a keyword or phrase (ex. “City Hall”)"
-                >
-                <!-- <input
-                  ref="archive-search-bar"
-                  type="submit"
-                  class="search-submit"
-                  value="Search"
-                > -->
-              </div>
-              <div class="entity-dropdown ">
-                Filter by entity
-                <label
-                  for="search-dropdown"
-                  aria-label="Search Dropdown"
-                >
-                  <select
-                    id="search-dropdown"
-                    v-model="selectedEntity"
-                    tabindex="0"
-                    placeholder="Select an Entity"
-                    aria-label="Select an Entity"
-                  >
-                    <option
-                      :key="''"
-                      :value="''"
-                    >
-                      Show all entities
-                    </option>
-                    <option
-                      v-for="entity in entitiesList"
-                      :key="`${entity }`"
-                      :value="entity"
-                    >{{ entity | entityName }}</option>
-                  </select>
-                </label>
-              </div>
-            </div>
-            <div class="date-search filter-category">
-              <span id="show-results-text"> Show results from</span>
-              <div class="date-filter">
-                <div class="date-container">
-                  <datepicker
-                    v-model="start"
-                    name="start"
-                    placeholder="Start date"
-                    format="MMM. dd, yyyy"
-                  />
-                </div>
-                <div id="to-text">
-                  <span> to </span>
-                </div>
-                <div class="date-container">
-                  <datepicker
-                    v-model="end"
-                    name="end"
-                    placeholder="End date"
-                    format="MMM. dd, yyyy"
-                  />
-                </div>
-              </div>
-              <div class="clear-button-wrap">
-                <button
-                  class="clear-button"
-                  aria-label="Clear all filters"
-                  @click="clearAllFilters"
-                >
-                  Clear all filters
-                </button>
-                <button
-                  class="button filter-button"
-                  aria-label="Apply advanced filters"
-                  :disabled="applyDisabled"
-                  @click="filter()"
-                >
-                  Apply Search
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      v-show="loading"
-      class="mtm center"
-    >
-      <i class="fas fa-spinner fa-spin fa-3x" />
-    </div>
-    <div
-      v-show="downloading"
-      class="mtm mbl center"
-    >
-      <div>
-        Downloading {{ fileName }}
-      </div>
-      <i class="fas fa-spinner fa-spin fa-3x" />
-    </div>
-    <div
-      v-show="!loading && emptyResponse"
-      class="h3 mtm center"
-    >
-      Sorry, there are no results.
-    </div>
-    <div
-      v-show="failure"
-      class="h3 mtm center"
-    >
-      Sorry, there was a problem. Please try again.
-    </div>
-    
-    <table
-      v-if="!loading && !emptyResponse && !failure"
-      class="table-container"
-    >
-      <thead>
-        <th class="th-doc-name">
-          <h5>Document name</h5>
-        </th>
-        <th 
-          class="th-doc-entity"
-        >
-          <h5>Entity</h5>
-        </th>
-        <th
-          class="table-sort date th-doc-date"
-          :class="sortDate"
-          @click="sort('documentDate')"
-        >
-          <h5>Document date</h5>
-        </th>
-        <th
-          class="th-meeting-number"
-        >
-          <h5>Meeting number</h5>
-        </th>
-        <th
-          class="th-page-count"
-        >
-          <h5>Page count</h5>
-        </th>
-        <th
-          class="th-format"
-        >
-          <h5>Format</h5>
-        </th>
-      </thead>
-
-      <paginate
-        v-if="filteredDocs.length"
-        ref="paginator"
-        name="filteredDocs"
-        :list="filteredDocs"
-        class="paginate-list"
-        tag="tbody"
-        :per="15"
-      >
-        <tr
-          v-for="minutes in paginated('filteredDocs')"
-          :key="minutes.id"
-        >
-          <td v-if="minutes.indexValues">
-            {{ minutes.indexValues["documentName"] }}
-          </td>
-          <td v-if="minutes.indexValues">
-            {{ minutes.indexValues["BODY"] | entityName }}
-          </td>
-          <td v-if="minutes.indexValues">
-            {{ minutes.indexValues["documentDate"] | dateDisplay }}
-          </td>
-          <td
-            v-if="minutes.indexValues"
-            align="right"
-          >
-            {{ minutes.indexValues["meetingNumber"] }}
-          </td>
-          <td align="right">
-            {{ minutes.pageCount }}
-          </td>
-          <td>
-            <a
-              class="download-link"
-              tabindex="0"
-              @click="requestFile(minutes.id, minutes.indexValues['documentName'])"
-              @keyup.enter="requestFile(minutes.id, minutes.indexValues['documentName'])"
-            >{{ minutes.indexValues["documentName"] | documentType }} <i class="fas fa-download" /> </a>
-          </td>
-        </tr>
-      </paginate>
-    </table>
-    <div 
-      v-if="filteredDocs.length && !emptyResponse"
-      class="table-pagination"
-    >
-      <div class="documents-number">
-        Showing <b> {{ filteredDocs.length }} </b> documents.
-      </div>
-      <paginate-links
-        class="app-pages"
-        for="filteredDocs"
-        :async="true"
-        :limit="3"
-        :show-step-links="true"
-        :hide-single-page="true"
-        :step-links="{
-          next: 'Next',
-          prev: 'Previous'
-        }"
-      />
-    </div>
+   TEST
   </div>
 </template>
 
@@ -296,6 +11,8 @@ import VueFuse from "vue-fuse";
 import VuePaginate from "vue-paginate";
 import moment from "moment";
 import Datepicker from "vuejs-datepicker";
+// import AdvancedSearch from '../components/AdvancedSearch.vue';
+import dhcd from "./dhcd.json";
 
 Vue.use(VueFuse);
 Vue.use(VuePaginate);
@@ -309,9 +26,10 @@ const fullListEndpoint = "https://api-test.phila.gov/dpd-docs-test/api/v1/docume
 const gkKey = "?gatekeeperKey=" + "81fb983218b1c837147c3c5334339e01";
 
 export default {
-  name: "DocumentsTable",
+  name: "DHCDDocumentsTable",
   components: {
     Datepicker,
+    
   },
   filters: {
     dateDisplay: function(val) {
@@ -357,17 +75,11 @@ export default {
     },
   },
   props: {
-    entityName: {
-      type: String,
-      default: 'Historical_Commission',
-    },
-    categoryName: {
-      type: String,
-      default: 'Meeting_Minutes', //TODO make default obj
-    },
-    categoryDescription: {
-      type: String,
-      default: '',
+    selectedProp: {
+      type: Object,
+      default: function () {
+        return { };
+      },
     },
   },
   data: function() {
@@ -444,7 +156,7 @@ export default {
   },
 
   mounted: function() {
-    this.requestFullDocumentsList();
+    // this.requestFullDocumentsList();
   },
 
   methods: {

@@ -6,12 +6,12 @@
       >
         <i class="fas fa-home" />
       </router-link>
-      / {{ $route.params.selectedProp.entityName | removeUnderscore }}
+      / {{ entityInformation.entityName | removeUnderscore }}
     </div>
     <div class="categories-title">
-      <h1> {{ selectedProp.entityName | removeUnderscore }} documents</h1>
+      <h1> {{ entityInformation.entityName | removeUnderscore }} documents</h1>
       <div 
-        v-html="selectedProp.entityDescription"
+        v-html="entityInformation.entityDescription"
       />
     </div>
     <div
@@ -37,14 +37,14 @@
       class="categories-list"
     >
       <div 
-        v-for="category in selectedProp.categories"
+        v-for="category in entityInformation.categories"
         :key="category.categoryName"
         class="category-container"
       >
         <router-link 
           class="category-container"
           :to="{name: 'documents', 
-                params: { selectedProp : selectedProp} }"
+                params: { entityName : entityInformation.entityName, categoryName: entityInformation.categories[0].categoryName } }"
         >
           <i
             class="fas fa-3x"
@@ -60,6 +60,7 @@
             />
           </div>
         </router-link>
+        
       </div>
     </div>
   </div>
@@ -69,6 +70,8 @@
 import Vue from "vue";
 import axios from "axios";
 import VueFuse from "vue-fuse";
+import historical_commission from "./historical_commission.json";
+import dhcd from "./dhcd.json";
 
 Vue.use(VueFuse);
 
@@ -95,12 +98,7 @@ export default {
   },
 
   props: {
-    selectedProp: {
-      type: Object,
-      default: function () {
-        return { };
-      },
-    },
+   
     entityName: {
       type: String,
       default: "",
@@ -112,6 +110,7 @@ export default {
       loading: false,
       emptyResponse: false,
       failure: false,
+      entityInformation: {},
     };
   },
   computed: { 
@@ -124,37 +123,41 @@ export default {
   },
 
   mounted: function() {
-    // this.getEntities();
-    console.log(this.$route);
+    if (this.$route.params.entityName === "Historical_Commission"){
+      this.entityInformation = historical_commission;
+      console.log(entit)
+    } else if (this.$route.params.entityName === "DHCD") {
+      this.entityInformation = dhcd;
+    }
   },
 
   methods: {
-    getEntities: function() {
-      axios
-        .get(endpoint + this.$route.params.selectedProp.entityName + gkKey)
-        .then(response => {
-          this.categoriesList = response.data;
+    // getEntities: function() {
+    //   axios
+    //     .get(endpoint + this.$route.params.selectedProp.entityName + gkKey)
+    //     .then(response => {
+    //       this.categoriesList = response.data;
           
-          this.loading = false;
+    //       this.loading = false;
 
-          this.emptyResponse = (this.categoriesList.length === 0) ? true : false;
+    //       this.emptyResponse = (this.categoriesList.length === 0) ? true : false;
 
-        })
-        .catch(e => {
-          console.log(e);
-          this.failure = true;
-          this.loading = false;
-          this.emptyResponse = false;
-        })
-        .finally(() => {
-          //comment this out to display the entire list
-          this.makeCategoriesList();
-        });
-    },
+    //     })
+    //     .catch(e => {
+    //       console.log(e);
+    //       this.failure = true;
+    //       this.loading = false;
+    //       this.emptyResponse = false;
+    //     })
+    //     .finally(() => {
+    //       //comment this out to display the entire list
+    //       this.makeCategoriesList();
+    //     });
+    // },
 
-    makeCategoriesList: function() {
-      this.categoriesList = this.categoriesList.filter(category => category.displayName === "Meeting Minutes");
-    },
+    // makeCategoriesList: function() {
+    //   this.categoriesList = this.categoriesList.filter(category => category.displayName === "Meeting Minutes");
+    // },
 
     makeID(val) {
       return val.replace(/\s+/g, "_");
